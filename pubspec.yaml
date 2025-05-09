@@ -16,6 +16,10 @@ dependencies:
   dartz: ^0.10.1
   http: ^1.4.0
   json_annotation: ^4.9.0
+  drift: ^2.26.1
+  drift_flutter: ^0.2.4
+  path_provider: ^2.1.5
+  internet_connection_checker: ^3.0.1
 
 dev_dependencies:
   flutter_test:
@@ -24,6 +28,7 @@ dev_dependencies:
   flutter_lints: ^5.0.0
   build_runner: ^2.4.15
   json_serializable: ^6.9.5
+  drift_dev: ^2.26.1
 
 flutter:
   uses-material-design: true
