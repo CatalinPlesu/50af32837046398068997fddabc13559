@@ -1,14 +1,14 @@
 import 'package:equatable/equatable.dart';
 
 abstract class Failure extends Equatable {
-  final List<Object?> properties;
-
-  const Failure([this.properties = const <Object?>[]]);
-
   @override
-  List<Object?> get props => properties;
+  List<Object> get props => [];
 }
 
 class ServerFailure extends Failure {}
+
+class NetworkFailure extends Failure {}
+
+class NotFoundFailure extends Failure {}
 
 class CacheFailure extends Failure {}
