@@ -1,49 +1,61 @@
 import 'package:ebs_application/domain/entities/review.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-class ReviewModel extends Review {
+part 'review_model.g.dart';
+
+@JsonSerializable()
+class ReviewModel {
+  final int id;
+  @JsonKey(name: 'created_at')
+  final DateTime createdAt;
+  @JsonKey(name: 'modified_at')
+  final DateTime modifiedAt;
+  @JsonKey(name: 'first_name')
+  final String firstName;
+  @JsonKey(name: 'last_name')
+  final String lastName;
+  @JsonKey(name: 'image')
+  final String? imageUrl;
+  final int rating;
+  final String message;
+
   ReviewModel({
-    required int id,
-    required DateTime createdAt,
-    required DateTime modifiedAt,
-    required String firstName,
-    required String lastName,
-    String? imageUrl,
-    required int rating,
-    required String message,
-  }) : super(
-    id: id,
-    createdAt: createdAt,
-    modifiedAt: modifiedAt,
-    firstName: firstName,
-    lastName: lastName,
-    imageUrl: imageUrl,
-    rating: rating,
-    message: message,
-  );
+    required this.id,
+    required this.createdAt,
+    required this.modifiedAt,
+    required this.firstName,
+    required this.lastName,
+    this.imageUrl,
+    required this.rating,
+    required this.message,
+  });
 
-  factory ReviewModel.fromJson(Map<String, dynamic> json) {
-    return ReviewModel(
-      id: json["id"],
-      createdAt: DateTime.parse(json["created_at"]),
-      modifiedAt: DateTime.parse(json["modified_at"]),
-      firstName: json["first_name"],
-      lastName: json["last_name"],
-      imageUrl: json["image"],
-      rating: json["rating"],
-      message: json["message"],
+  factory ReviewModel.fromJson(Map<String, dynamic> json) => _$ReviewModelFromJson(json);
+  Map<String, dynamic> toJson() => _$ReviewModelToJson(this);
+
+  Review toEntity() {
+    return Review(
+      id: id,
+      createdAt: createdAt,
+      modifiedAt: modifiedAt,
+      firstName: firstName,
+      lastName: lastName,
+      imageUrl: imageUrl,
+      rating: rating,
+      message: message,
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      "id": id,
-      "created_at": createdAt.toIso8601String(),
-      "modified_at": modifiedAt.toIso8601String(),
-      "first_name": firstName,
-      "last_name": lastName,
-      "image": imageUrl,
-      "rating": rating,
-      "message": message,
-    };
+  factory ReviewModel.fromEntity(Review review) {
+    return ReviewModel(
+      id: review.id,
+      createdAt: review.createdAt,
+      modifiedAt: review.modifiedAt,
+      firstName: review.firstName,
+      lastName: review.lastName,
+      imageUrl: review.imageUrl,
+      rating: review.rating,
+      message: review.message,
+    );
   }
 }

@@ -1,12 +1,33 @@
 import 'package:ebs_application/domain/entities/category.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-class CategoryModel extends Category {
+part 'category_model.g.dart';
+
+@JsonSerializable()
+class CategoryModel {
+  final String name;
+  @JsonKey(name: 'icon')
+  final String iconUrl;
+
   CategoryModel({
-    required String name,
-    required String iconUrl,
-  }) : super(name: name, iconUrl: iconUrl);
+    required this.name,
+    required this.iconUrl,
+  });
 
-  factory CategoryModel.fromJson(Map<String, dynamic> json ){
-    return CategoryModel(name: json["name"], iconUrl: json["icon"]);
+  factory CategoryModel.fromJson(Map<String, dynamic> json) => _$CategoryModelFromJson(json);
+  Map<String, dynamic> toJson() => _$CategoryModelToJson(this);
+
+  Category toEntity() {
+    return Category(
+      name: name,
+      iconUrl: iconUrl,
+    );
+  }
+
+  factory CategoryModel.fromEntity(Category category) {
+    return CategoryModel(
+      name: category.name,
+      iconUrl: category.iconUrl,
+    );
   }
 }

@@ -1,49 +1,98 @@
 import 'package:ebs_application/domain/entities/product.dart';
 import 'package:ebs_application/data/models/category_model.dart';
 import 'package:ebs_application/data/models/review_model.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-class ProductModel extends Product {
+part 'product_model.g.dart';
+
+class CategoryConverter implements JsonConverter<CategoryModel, Map<String, dynamic>> {
+  const CategoryConverter();
+
+  @override
+  CategoryModel fromJson(Map<String, dynamic> json) => CategoryModel.fromJson(json);
+
+  @override
+  Map<String, dynamic> toJson(CategoryModel category) => category.toJson();
+}
+
+class ReviewsConverter implements JsonConverter<List<ReviewModel>, List<dynamic>> {
+  const ReviewsConverter();
+
+  @override
+  List<ReviewModel> fromJson(List<dynamic> json) =>
+      json.map((e) => ReviewModel.fromJson(e as Map<String, dynamic>)).toList();
+
+  @override
+  List<Map<String, dynamic>> toJson(List<ReviewModel> reviews) =>
+      reviews.map((e) => e.toJson()).toList();
+}
+
+@JsonSerializable()
+class ProductModel {
+  final int id;
+  final String name;
+  final String details;
+  final String size;
+  @JsonKey(name: 'colour')
+  final String color;
+  final double price;
+  @JsonKey(name: 'main_image')
+  final String mainImageUrl;
+  @JsonKey(name: 'category')
+  final CategoryModel category;
+  @JsonKey(name: 'sold_count')
+  final int soldCount;
+  @JsonKey(name: 'images')
+  final List<String> imagesUrl;
+  @JsonKey(name: 'reviews')
+  final List<ReviewModel> reviews;
+
   ProductModel({
-    required int id,
-    required String name,
-    required String details,
-    required String size,
-    required String color,
-    required double price,
-    required String mainImageUrl,
-    required CategoryModel category,
-    required int soldCount,
-    required List<String> imagesUrl,
-    required List<ReviewModel> reviews,
-  }) : super(
-    id: id,
-    name: name,
-    details: details,
-    size: size,
-    color: color,
-    price: price,
-    mainImageUrl: mainImageUrl,
-    category: category,
-    soldCount: soldCount,
-    imagesUrl: imagesUrl,
-    reviews: reviews,
-  );
+    required this.id,
+    required this.name,
+    required this.details,
+    required this.size,
+    required this.color,
+    required this.price,
+    required this.mainImageUrl,
+    required this.category,
+    required this.soldCount,
+    required this.imagesUrl,
+    required this.reviews,
+  });
 
-  factory ProductModel.fromJson(Map<String, dynamic> json) {
-    var imagesList = (json['images'] as List?)?.map((i) => i['image'] as String).toList() ?? [];
-    var reviewsList = (json['reviews'] as List?)?.map((i) => ReviewModel.fromJson(i as Map<String, dynamic>)).toList() ?? [];
+  factory ProductModel.fromJson(Map<String, dynamic> json) => _$ProductModelFromJson(json);
+  Map<String, dynamic> toJson() => _$ProductModelToJson(this);
+
+  Product toEntity() {
+    return Product(
+      id: id,
+      name: name,
+      details: details,
+      size: size,
+      color: color,
+      price: price,
+      mainImageUrl: mainImageUrl,
+      category: category.toEntity(),
+      soldCount: soldCount,
+      imagesUrl: imagesUrl,
+      reviews: reviews.map((review) => review.toEntity()).toList(),
+    );
+  }
+
+  factory ProductModel.fromEntity(Product product) {
     return ProductModel(
-      id: json['id'],
-      name: json['name'],
-      details: json['details'],
-      size: json['size'],
-      color: json['colour'],
-      price: (json['price'] as num).toDouble(),
-      mainImageUrl: json['main_image'],
-      category: CategoryModel.fromJson(json['category'] as Map<String, dynamic>),
-      soldCount: json['sold_count'] ?? 0,
-      imagesUrl: imagesList,
-      reviews: reviewsList,
+      id: product.id,
+      name: product.name,
+      details: product.details,
+      size: product.size,
+      color: product.color,
+      price: product.price,
+      mainImageUrl: product.mainImageUrl,
+      category: CategoryModel.fromEntity(product.category),
+      soldCount: product.soldCount,
+      imagesUrl: product.imagesUrl,
+      reviews: product.reviews.map((review) => ReviewModel.fromEntity(review)).toList(),
     );
   }
 }
