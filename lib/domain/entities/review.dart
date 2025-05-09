@@ -1,5 +1,6 @@
-// lib/domain/entities/product_review.dart
-class ProductReview {
+import 'package:equatable/equatable.dart';
+
+class Review extends Equatable{
   final int id;
   final DateTime createdAt;
   final DateTime modifiedAt;
@@ -9,7 +10,7 @@ class ProductReview {
   final int rating;
   final String message;
 
-  const ProductReview({
+  const Review({
     required this.id,
     required this.createdAt,
     required this.modifiedAt,
@@ -19,4 +20,7 @@ class ProductReview {
     required this.rating,
     required this.message,
   });
+
+  @override
+  List<Object> get props => [id, createdAt, firstName, lastName];
 }

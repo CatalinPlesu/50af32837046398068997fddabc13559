@@ -1,7 +1,9 @@
+import 'package:equatable/equatable.dart';
+
 import 'category.dart';
 import 'review.dart';
 
-class Product {
+class Product extends Equatable{
   final int id;
   final String name;
   final String details;
@@ -12,7 +14,7 @@ class Product {
   final Category category;
   final int soldCount;
   final List<String> imagesUrl;
-  final List<ProductReview> reviews;
+  final List<Review> reviews;
 
 
   const Product({
@@ -28,4 +30,7 @@ class Product {
     required this.imagesUrl,
     required this.reviews,
   });
+
+  @override
+  List<Object> get props => [id, name, size, color, category];
 }
