@@ -8,23 +8,27 @@ part of 'review_model.dart';
 
 ReviewModel _$ReviewModelFromJson(Map<String, dynamic> json) => ReviewModel(
   id: (json['id'] as num).toInt(),
-  createdAt: DateTime.parse(json['createdAt'] as String),
-  modifiedAt: DateTime.parse(json['modifiedAt'] as String),
-  firstName: json['firstName'] as String,
-  lastName: json['lastName'] as String,
-  imageUrl: json['imageUrl'] as String?,
-  rating: (json['rating'] as num).toInt(),
-  message: json['message'] as String,
+  productId: (json['product_id'] as num).toInt(),
+  userId: (json['user_id'] as num).toInt(),
+  firstName: json['first_name'] as String,
+  lastName: json['last_name'] as String,
+  userImage: json['user_image'] as String,
+  rating: (json['rating'] as num).toDouble(),
+  comment: json['comment'] as String,
+  createdAt: DateTime.parse(json['created_at'] as String),
+  modifiedAt: DateTime.parse(json['modified_at'] as String),
 );
 
 Map<String, dynamic> _$ReviewModelToJson(ReviewModel instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'createdAt': instance.createdAt.toIso8601String(),
-      'modifiedAt': instance.modifiedAt.toIso8601String(),
-      'firstName': instance.firstName,
-      'lastName': instance.lastName,
-      'imageUrl': instance.imageUrl,
+      'product_id': instance.productId,
+      'user_id': instance.userId,
+      'first_name': instance.firstName,
+      'last_name': instance.lastName,
+      'user_image': instance.userImage,
       'rating': instance.rating,
-      'message': instance.message,
+      'comment': instance.comment,
+      'created_at': instance.createdAt.toIso8601String(),
+      'modified_at': instance.modifiedAt.toIso8601String(),
     };
