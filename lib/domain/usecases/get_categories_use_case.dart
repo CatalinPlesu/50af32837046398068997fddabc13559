@@ -4,10 +4,10 @@ import 'package:ebs_application/domain/entities/category.dart';
 
 import '../repositories/category_repository.dart';
 
-class GetCategories {
+class GetCategoriesUseCase {
   final CategoryRepository repository;
 
-  GetCategories(this.repository);
+  GetCategoriesUseCase(this.repository);
 
   Future<Either<Failure, List<Category>>> execute() async {
     return await repository.getCategories();
