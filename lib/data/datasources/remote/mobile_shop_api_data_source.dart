@@ -13,7 +13,6 @@ abstract class MobileShopApiDataSource {
     int pageSize = 10,
   });
   Future<ProductModel> getFullProductDetails(int id);
-  Future<List<ReviewModel>> getProductReviews(int productId);
   Future<bool> addProductReview(int productId, ReviewModel review);
 }
 
@@ -38,8 +37,13 @@ class MobileShopApiDataSourceImpl implements MobileShopApiDataSource {
     );
 
     if (response.statusCode == 200) {
-      final List<dynamic> jsonList = json.decode(response.body);
-      return jsonList.map((json) => CategoryModel.fromJson(json)).toList();
+      try {
+        final CategoryResponseModel categoryResponse =
+        CategoryResponseModel.fromJson(json.decode(response.body) as Map<String, dynamic>);
+        return categoryResponse.results;
+      } catch (e) {
+        throw ServerException();
+      }
     } else {
       throw ServerException();
     }
@@ -61,8 +65,9 @@ class MobileShopApiDataSourceImpl implements MobileShopApiDataSource {
     );
 
     if (response.statusCode == 200) {
-      final List<dynamic> jsonList = json.decode(response.body);
-      return jsonList.map((json) => ProductModel.fromJson(json)).toList();
+      final ProductResponseModel productResponse =
+      ProductResponseModel.fromJson(json.decode(response.body) as Map<String, dynamic>);
+      return productResponse.results;
     } else {
       throw ServerException();
     }
@@ -84,8 +89,9 @@ class MobileShopApiDataSourceImpl implements MobileShopApiDataSource {
     );
 
     if (response.statusCode == 200) {
-      final List<dynamic> jsonList = json.decode(response.body);
-      return jsonList.map((json) => ProductModel.fromJson(json)).toList();
+      final ProductResponseModel productResponse =
+      ProductResponseModel.fromJson(json.decode(response.body) as Map<String, dynamic>);
+      return productResponse.results;
     } else {
       throw ServerException();
     }
@@ -100,23 +106,6 @@ class MobileShopApiDataSourceImpl implements MobileShopApiDataSource {
 
     if (response.statusCode == 200) {
       return ProductModel.fromJson(json.decode(response.body));
-    } else if (response.statusCode == 404) {
-      throw NotFoundException();
-    } else {
-      throw ServerException();
-    }
-  }
-
-  @override
-  Future<List<ReviewModel>> getProductReviews(int productId) async {
-    final response = await client.get(
-      Uri.parse('$baseUrl/products/$productId/reviews'),
-      headers: _headers,
-    );
-
-    if (response.statusCode == 200) {
-      final List<dynamic> jsonList = json.decode(response.body);
-      return jsonList.map((json) => ReviewModel.fromJson(json)).toList();
     } else if (response.statusCode == 404) {
       throw NotFoundException();
     } else {
