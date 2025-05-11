@@ -36,7 +36,7 @@ class MobileShopLocalDataSourceImpl implements MobileShopLocalDataSource {
           (category) => CategoryModel(
             id: category.categoryId,
             name: category.name,
-            iconUrl: category.iconUrl,
+            icon: category.icon,
           ),
         )
         .toList();
@@ -59,28 +59,25 @@ class MobileShopLocalDataSourceImpl implements MobileShopLocalDataSource {
             name: details.product.name,
             details: details.product.details,
             size: details.product.size,
-            color: details.product.color,
+            colour: details.product.colour,
             price: details.product.price,
-            mainImageUrl: details.product.mainImageUrl,
+            mainImage: details.product.mainImage,
             category: CategoryModel(
               id: details.category.categoryId,
               name: details.category.name,
-              iconUrl: details.category.iconUrl,
+              icon: details.category.icon,
             ),
             soldCount: details.product.soldCount,
-            imagesUrl: details.images.map((img) => img.imageUrl).toList(),
+            images: details.images.map((img) => img.image).toList(),
             reviews:
                 details.reviews
                     .map(
                       (review) => ReviewModel(
                         id: review.reviewId,
-                        productId: review.productId,
-                        userId: review.userId,
                         firstName: review.firstName,
                         lastName: review.lastName,
-                        userImage: review.userImage,
+                        image: review.image,
                         rating: review.rating,
-                        comment: review.comment,
                         message: review.message,
                         createdAt: review.createdAt,
                         modifiedAt: review.modifiedAt,
@@ -115,28 +112,25 @@ class MobileShopLocalDataSourceImpl implements MobileShopLocalDataSource {
             name: details.product.name,
             details: details.product.details,
             size: details.product.size,
-            color: details.product.color,
+            colour: details.product.colour,
             price: details.product.price,
-            mainImageUrl: details.product.mainImageUrl,
+            mainImage: details.product.mainImage,
             category: CategoryModel(
               id: details.category.categoryId,
               name: details.category.name,
-              iconUrl: details.category.iconUrl,
+              icon: details.category.icon,
             ),
             soldCount: details.product.soldCount,
-            imagesUrl: details.images.map((img) => img.imageUrl).toList(),
+            images: details.images.map((img) => img.image).toList(),
             reviews:
                 details.reviews
                     .map(
                       (review) => ReviewModel(
                         id: review.reviewId,
-                        productId: review.productId,
-                        userId: review.userId,
                         firstName: review.firstName,
                         lastName: review.lastName,
-                        userImage: review.userImage,
+                        image: review.image,
                         rating: review.rating,
-                        comment: review.comment,
                         message: review.message,
                         createdAt: review.createdAt,
                         modifiedAt: review.modifiedAt,
@@ -161,28 +155,26 @@ class MobileShopLocalDataSourceImpl implements MobileShopLocalDataSource {
       name: details.product.name,
       details: details.product.details,
       size: details.product.size,
-      color: details.product.color,
+      colour: details.product.colour,
       price: details.product.price,
-      mainImageUrl: details.product.mainImageUrl,
+      mainImage: details.product.mainImage,
       category: CategoryModel(
         id: details.category.categoryId,
         name: details.category.name,
-        iconUrl: details.category.iconUrl,
+        icon: details.category.icon,
       ),
       soldCount: details.product.soldCount,
-      imagesUrl: details.images.map((img) => img.imageUrl).toList(),
+      images: details.images.map((img) => img.image).toList(),
       reviews:
           details.reviews
               .map(
                 (review) => ReviewModel(
                   id: review.reviewId,
-                  productId: review.productId,
-                  userId: review.userId,
                   firstName: review.firstName,
                   lastName: review.lastName,
-                  userImage: review.userImage,
+                  image: review.image,
                   rating: review.rating,
-                  comment: review.comment,
+                  message: review.message,
                   createdAt: review.createdAt,
                   modifiedAt: review.modifiedAt,
                 ),
@@ -198,13 +190,11 @@ class MobileShopLocalDataSourceImpl implements MobileShopLocalDataSource {
         .map(
           (review) => ReviewModel(
             id: review.reviewId,
-            productId: review.productId,
-            userId: review.userId,
             firstName: review.firstName,
             lastName: review.lastName,
-            userImage: review.userImage,
+            image: review.image,
             rating: review.rating,
-            comment: review.comment,
+            message: review.message,
             createdAt: review.createdAt,
             modifiedAt: review.modifiedAt,
           ),
@@ -217,44 +207,39 @@ class MobileShopLocalDataSourceImpl implements MobileShopLocalDataSource {
     return await database.addProductReview(
       ReviewsCompanion.insert(
         reviewId: review.id,
-        productId: review.productId,
-        userId: review.userId,
+        productId: 0,
         firstName: review.firstName,
         lastName: review.lastName,
-        userImage: review.userImage,
+        image: review.image,
         rating: review.rating,
-        comment: review.comment,
+        message: review.message,
         createdAt: review.createdAt,
         modifiedAt: review.modifiedAt,
-        lastUpdated: DateTime.now(),
       ),
     );
   }
 
   @override
   Future<void> insertProduct(ProductModel product) async {
-    final now = DateTime.now();
     await database.insertProduct(
       ProductsCompanion.insert(
         productId: product.id,
         name: product.name,
         details: product.details,
         size: product.size,
-        color: product.color,
+        colour: product.colour,
         price: product.price,
-        mainImageUrl: product.mainImageUrl,
-        categoryId: product.category.id,
-        soldCount: Value(product.soldCount),
-        lastUpdated: now,
+        mainImage: product.mainImage,
+        categoryId: product.category.id!,
+        soldCount: Value(product.soldCount!),
       ),
     );
 
-    for (final imageUrl in product.imagesUrl) {
+    for (final image in product.images ?? []) {
       await database.insertProductImage(
         ProductImagesCompanion.insert(
           productId: product.id,
-          imageUrl: imageUrl,
-          lastUpdated: now,
+          image: image,
         ),
       );
     }
@@ -271,10 +256,9 @@ class MobileShopLocalDataSourceImpl implements MobileShopLocalDataSource {
   Future<void> insertCategory(CategoryModel category) async {
     await database.insertCategory(
       CategoriesCompanion.insert(
-        categoryId: category.id,
+        categoryId: category.id ?? 0,
         name: category.name,
-        iconUrl: category.iconUrl,
-        lastUpdated: DateTime.now(),
+        icon: category.icon,
       ),
     );
   }
@@ -291,17 +275,14 @@ class MobileShopLocalDataSourceImpl implements MobileShopLocalDataSource {
     await database.insertReview(
       ReviewsCompanion.insert(
         reviewId: review.id,
-        productId: review.productId,
-        userId: review.userId,
+        productId: 0,
         firstName: review.firstName,
         lastName: review.lastName,
-        userImage: review.userImage,
+        image: review.image,
         rating: review.rating,
-        comment: review.comment,
         message: review.message,
         createdAt: review.createdAt,
         modifiedAt: review.modifiedAt,
-        lastUpdated: DateTime.now(),
       ),
     );
   }
