@@ -2,12 +2,11 @@ import 'package:dartz/dartz.dart';
 import 'package:ebs_application/core/error/failure.dart';
 import 'package:ebs_application/data/datasources/remote/mobile_shop_api_data_source.dart';
 import 'package:ebs_application/data/datasources/local/mobile_shop_local_data_source.dart';
-import 'package:ebs_application/data/models/product_model.dart';
 import 'package:ebs_application/data/models/review_model.dart';
 import 'package:ebs_application/domain/entities/product.dart';
 import 'package:ebs_application/domain/entities/review.dart';
 import 'package:ebs_application/domain/repositories/product_repository.dart';
-import 'package:ebs_application/core/platform/network_info.dart';
+import 'package:ebs_application/core/network/network_info.dart';
 
 class ProductRepositoryImpl implements ProductRepository {
   final MobileShopApiDataSource remoteDataSource;
@@ -88,13 +87,11 @@ class ProductRepositoryImpl implements ProductRepository {
       try {
         final reviewModel = ReviewModel(
           id: review.id,
-          productId: review.productId,
-          userId: review.userId,
           firstName: review.firstName,
           lastName: review.lastName,
-          userImage: review.userImage,
+          image: review.image,
           rating: review.rating,
-          comment: review.comment,
+          message: review.message,
           createdAt: review.createdAt,
           modifiedAt: review.modifiedAt,
         );

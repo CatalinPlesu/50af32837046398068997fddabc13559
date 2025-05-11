@@ -3,7 +3,7 @@ import 'package:ebs_application/core/error/failure.dart';
 import 'package:ebs_application/data/datasources/remote/mobile_shop_api_data_source.dart';
 import 'package:ebs_application/domain/entities/category.dart';
 import 'package:ebs_application/domain/repositories/category_repository.dart';
-import 'package:ebs_application/core/platform/network_info.dart';
+import 'package:ebs_application/core/network/network_info.dart';
 
 class CategoryRepositoryImpl implements CategoryRepository {
   final MobileShopApiDataSource remoteDataSource;
