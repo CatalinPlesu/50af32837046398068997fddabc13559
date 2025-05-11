@@ -11,15 +11,15 @@ ProductModel _$ProductModelFromJson(Map<String, dynamic> json) => ProductModel(
   name: json['name'] as String,
   details: json['details'] as String,
   size: json['size'] as String,
-  color: json['colour'] as String,
+  colour: json['colour'] as String,
   price: (json['price'] as num).toDouble(),
-  mainImageUrl: json['main_image'] as String,
+  mainImage: json['main_image'] as String,
   category: CategoryModel.fromJson(json['category'] as Map<String, dynamic>),
-  soldCount: (json['sold_count'] as num).toInt(),
-  imagesUrl: (json['images'] as List<dynamic>).map((e) => e as String).toList(),
+  soldCount: (json['sold_count'] as num?)?.toInt(),
+  images: (json['images'] as List<dynamic>?)?.map((e) => e as String).toList(),
   reviews:
-      (json['reviews'] as List<dynamic>)
-          .map((e) => ReviewModel.fromJson(e as Map<String, dynamic>))
+      (json['reviews'] as List<dynamic>?)
+          ?.map((e) => ReviewModel.fromJson(e as Map<String, dynamic>))
           .toList(),
 );
 
@@ -29,11 +29,24 @@ Map<String, dynamic> _$ProductModelToJson(ProductModel instance) =>
       'name': instance.name,
       'details': instance.details,
       'size': instance.size,
-      'colour': instance.color,
+      'colour': instance.colour,
       'price': instance.price,
-      'main_image': instance.mainImageUrl,
+      'main_image': instance.mainImage,
       'category': instance.category,
       'sold_count': instance.soldCount,
-      'images': instance.imagesUrl,
+      'images': instance.images,
       'reviews': instance.reviews,
     };
+
+ProductResponseModel _$ProductResponseModelFromJson(
+  Map<String, dynamic> json,
+) => ProductResponseModel(
+  results:
+      (json['results'] as List<dynamic>)
+          .map((e) => ProductModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
+);
+
+Map<String, dynamic> _$ProductResponseModelToJson(
+  ProductResponseModel instance,
+) => <String, dynamic>{'results': instance.results};

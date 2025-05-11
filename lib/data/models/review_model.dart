@@ -6,67 +6,57 @@ part 'review_model.g.dart';
 @JsonSerializable()
 class ReviewModel {
   final int id;
-  @JsonKey(name: 'product_id')
-  final int productId;
-  @JsonKey(name: 'user_id')
-  final int userId;
-  @JsonKey(name: 'first_name')
-  final String firstName;
-  @JsonKey(name: 'last_name')
-  final String lastName;
-  @JsonKey(name: 'user_image')
-  final String userImage;
-  final double rating;
-  final String comment;
   @JsonKey(name: 'created_at')
   final DateTime createdAt;
   @JsonKey(name: 'modified_at')
   final DateTime modifiedAt;
+  @JsonKey(name: 'first_name')
+  final String firstName;
+  @JsonKey(name: 'last_name')
+  final String lastName;
+  final String image;
+  final double rating;
+  final String message;
 
   ReviewModel({
     required this.id,
-    required this.productId,
-    required this.userId,
-    required this.firstName,
-    required this.lastName,
-    required this.userImage,
-    required this.rating,
-    required this.comment,
     required this.createdAt,
     required this.modifiedAt,
+    required this.firstName,
+    required this.lastName,
+    required this.image,
+    required this.rating,
+    required this.message,
   });
 
   factory ReviewModel.fromJson(Map<String, dynamic> json) =>
       _$ReviewModelFromJson(json);
+
   Map<String, dynamic> toJson() => _$ReviewModelToJson(this);
 
   Review toEntity() {
     return Review(
       id: id,
-      productId: productId,
-      userId: userId,
-      firstName: firstName,
-      lastName: lastName,
-      userImage: userImage,
-      rating: rating,
-      comment: comment,
       createdAt: createdAt,
       modifiedAt: modifiedAt,
+      firstName: firstName,
+      lastName: lastName,
+      image: image,
+      rating: rating,
+      message: message,
     );
   }
 
   factory ReviewModel.fromEntity(Review review) {
     return ReviewModel(
       id: review.id,
-      productId: review.productId,
-      userId: review.userId,
-      firstName: review.firstName,
-      lastName: review.lastName,
-      userImage: review.userImage,
-      rating: review.rating,
-      comment: review.comment,
       createdAt: review.createdAt,
       modifiedAt: review.modifiedAt,
+      firstName: review.firstName,
+      lastName: review.lastName,
+      image: review.image,
+      rating: review.rating,
+      message: review.message,
     );
   }
 }

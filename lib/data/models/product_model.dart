@@ -5,59 +5,33 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'product_model.g.dart';
 
-class CategoryConverter implements JsonConverter<CategoryModel, Map<String, dynamic>> {
-  const CategoryConverter();
-
-  @override
-  CategoryModel fromJson(Map<String, dynamic> json) => CategoryModel.fromJson(json);
-
-  @override
-  Map<String, dynamic> toJson(CategoryModel category) => category.toJson();
-}
-
-class ReviewsConverter implements JsonConverter<List<ReviewModel>, List<dynamic>> {
-  const ReviewsConverter();
-
-  @override
-  List<ReviewModel> fromJson(List<dynamic> json) =>
-      json.map((e) => ReviewModel.fromJson(e as Map<String, dynamic>)).toList();
-
-  @override
-  List<Map<String, dynamic>> toJson(List<ReviewModel> reviews) =>
-      reviews.map((e) => e.toJson()).toList();
-}
-
 @JsonSerializable()
 class ProductModel {
   final int id;
   final String name;
   final String details;
   final String size;
-  @JsonKey(name: 'colour')
-  final String color;
+  final String colour;
   final double price;
   @JsonKey(name: 'main_image')
-  final String mainImageUrl;
-  @JsonKey(name: 'category')
+  final String mainImage;
   final CategoryModel category;
   @JsonKey(name: 'sold_count')
-  final int soldCount;
-  @JsonKey(name: 'images')
-  final List<String> imagesUrl;
-  @JsonKey(name: 'reviews')
-  final List<ReviewModel> reviews;
+  final int? soldCount;
+  final List<String>? images;
+  final List<ReviewModel>? reviews;
 
   ProductModel({
     required this.id,
     required this.name,
     required this.details,
     required this.size,
-    required this.color,
+    required this.colour,
     required this.price,
-    required this.mainImageUrl,
+    required this.mainImage,
     required this.category,
     required this.soldCount,
-    required this.imagesUrl,
+    required this.images,
     required this.reviews,
   });
 
@@ -70,13 +44,13 @@ class ProductModel {
       name: name,
       details: details,
       size: size,
-      color: color,
+      colour: colour,
       price: price,
-      mainImageUrl: mainImageUrl,
+      mainImage: mainImage,
       category: category.toEntity(),
       soldCount: soldCount,
-      imagesUrl: imagesUrl,
-      reviews: reviews.map((review) => review.toEntity()).toList(),
+      images: images ?? [],
+      reviews: reviews?.map((review) => review.toEntity()).toList() ?? [],
     );
   }
 
@@ -86,13 +60,27 @@ class ProductModel {
       name: product.name,
       details: product.details,
       size: product.size,
-      color: product.color,
+      colour: product.colour,
       price: product.price,
-      mainImageUrl: product.mainImageUrl,
+      mainImage: product.mainImage,
       category: CategoryModel.fromEntity(product.category),
       soldCount: product.soldCount,
-      imagesUrl: product.imagesUrl,
+      images: product.images,
       reviews: product.reviews.map((review) => ReviewModel.fromEntity(review)).toList(),
     );
   }
+}
+
+@JsonSerializable()
+class ProductResponseModel {
+  final List<ProductModel> results;
+
+  ProductResponseModel({
+    required this.results,
+  });
+
+  factory ProductResponseModel.fromJson(Map<String, dynamic> json) =>
+      _$ProductResponseModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ProductResponseModelToJson(this);
 }
