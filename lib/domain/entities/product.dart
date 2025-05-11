@@ -8,12 +8,12 @@ class Product extends Equatable{
   final String name;
   final String details;
   final String size;
-  final String color;
+  final String colour;
   final double price;
-  final String mainImageUrl;
+  final String mainImage;
   final Category category;
-  final int soldCount;
-  final List<String> imagesUrl;
+  final int? soldCount;
+  final List<String> images;
   final List<Review> reviews;
 
 
@@ -22,15 +22,15 @@ class Product extends Equatable{
     required this.name,
     required this.details,
     required this.size,
-    required this.color,
+    required this.colour,
     required this.price,
-    required this.mainImageUrl,
+    required this.mainImage,
     required this.category,
     required this.soldCount,
-    required this.imagesUrl,
+    required this.images,
     required this.reviews,
   });
 
   @override
-  List<Object> get props => [id, name, size, color, category];
+  List<Object> get props => [name, size, colour, category];
 }
