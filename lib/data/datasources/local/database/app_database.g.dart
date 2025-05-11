@@ -43,36 +43,17 @@ class $CategoriesTable extends Categories
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _iconUrlMeta = const VerificationMeta(
-    'iconUrl',
-  );
+  static const VerificationMeta _iconMeta = const VerificationMeta('icon');
   @override
-  late final GeneratedColumn<String> iconUrl = GeneratedColumn<String>(
-    'icon_url',
+  late final GeneratedColumn<String> icon = GeneratedColumn<String>(
+    'icon',
     aliasedName,
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _lastUpdatedMeta = const VerificationMeta(
-    'lastUpdated',
-  );
   @override
-  late final GeneratedColumn<DateTime> lastUpdated = GeneratedColumn<DateTime>(
-    'last_updated',
-    aliasedName,
-    false,
-    type: DriftSqlType.dateTime,
-    requiredDuringInsert: true,
-  );
-  @override
-  List<GeneratedColumn> get $columns => [
-    id,
-    categoryId,
-    name,
-    iconUrl,
-    lastUpdated,
-  ];
+  List<GeneratedColumn> get $columns => [id, categoryId, name, icon];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -104,24 +85,13 @@ class $CategoriesTable extends Categories
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
-    if (data.containsKey('icon_url')) {
+    if (data.containsKey('icon')) {
       context.handle(
-        _iconUrlMeta,
-        iconUrl.isAcceptableOrUnknown(data['icon_url']!, _iconUrlMeta),
+        _iconMeta,
+        icon.isAcceptableOrUnknown(data['icon']!, _iconMeta),
       );
     } else if (isInserting) {
-      context.missing(_iconUrlMeta);
-    }
-    if (data.containsKey('last_updated')) {
-      context.handle(
-        _lastUpdatedMeta,
-        lastUpdated.isAcceptableOrUnknown(
-          data['last_updated']!,
-          _lastUpdatedMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_lastUpdatedMeta);
+      context.missing(_iconMeta);
     }
     return context;
   }
@@ -147,15 +117,10 @@ class $CategoriesTable extends Categories
             DriftSqlType.string,
             data['${effectivePrefix}name'],
           )!,
-      iconUrl:
+      icon:
           attachedDatabase.typeMapping.read(
             DriftSqlType.string,
-            data['${effectivePrefix}icon_url'],
-          )!,
-      lastUpdated:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.dateTime,
-            data['${effectivePrefix}last_updated'],
+            data['${effectivePrefix}icon'],
           )!,
     );
   }
@@ -170,14 +135,12 @@ class CategoryTable extends DataClass implements Insertable<CategoryTable> {
   final int id;
   final int categoryId;
   final String name;
-  final String iconUrl;
-  final DateTime lastUpdated;
+  final String icon;
   const CategoryTable({
     required this.id,
     required this.categoryId,
     required this.name,
-    required this.iconUrl,
-    required this.lastUpdated,
+    required this.icon,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -185,8 +148,7 @@ class CategoryTable extends DataClass implements Insertable<CategoryTable> {
     map['id'] = Variable<int>(id);
     map['category_id'] = Variable<int>(categoryId);
     map['name'] = Variable<String>(name);
-    map['icon_url'] = Variable<String>(iconUrl);
-    map['last_updated'] = Variable<DateTime>(lastUpdated);
+    map['icon'] = Variable<String>(icon);
     return map;
   }
 
@@ -195,8 +157,7 @@ class CategoryTable extends DataClass implements Insertable<CategoryTable> {
       id: Value(id),
       categoryId: Value(categoryId),
       name: Value(name),
-      iconUrl: Value(iconUrl),
-      lastUpdated: Value(lastUpdated),
+      icon: Value(icon),
     );
   }
 
@@ -209,8 +170,7 @@ class CategoryTable extends DataClass implements Insertable<CategoryTable> {
       id: serializer.fromJson<int>(json['id']),
       categoryId: serializer.fromJson<int>(json['categoryId']),
       name: serializer.fromJson<String>(json['name']),
-      iconUrl: serializer.fromJson<String>(json['iconUrl']),
-      lastUpdated: serializer.fromJson<DateTime>(json['lastUpdated']),
+      icon: serializer.fromJson<String>(json['icon']),
     );
   }
   @override
@@ -220,8 +180,7 @@ class CategoryTable extends DataClass implements Insertable<CategoryTable> {
       'id': serializer.toJson<int>(id),
       'categoryId': serializer.toJson<int>(categoryId),
       'name': serializer.toJson<String>(name),
-      'iconUrl': serializer.toJson<String>(iconUrl),
-      'lastUpdated': serializer.toJson<DateTime>(lastUpdated),
+      'icon': serializer.toJson<String>(icon),
     };
   }
 
@@ -229,14 +188,12 @@ class CategoryTable extends DataClass implements Insertable<CategoryTable> {
     int? id,
     int? categoryId,
     String? name,
-    String? iconUrl,
-    DateTime? lastUpdated,
+    String? icon,
   }) => CategoryTable(
     id: id ?? this.id,
     categoryId: categoryId ?? this.categoryId,
     name: name ?? this.name,
-    iconUrl: iconUrl ?? this.iconUrl,
-    lastUpdated: lastUpdated ?? this.lastUpdated,
+    icon: icon ?? this.icon,
   );
   CategoryTable copyWithCompanion(CategoriesCompanion data) {
     return CategoryTable(
@@ -244,9 +201,7 @@ class CategoryTable extends DataClass implements Insertable<CategoryTable> {
       categoryId:
           data.categoryId.present ? data.categoryId.value : this.categoryId,
       name: data.name.present ? data.name.value : this.name,
-      iconUrl: data.iconUrl.present ? data.iconUrl.value : this.iconUrl,
-      lastUpdated:
-          data.lastUpdated.present ? data.lastUpdated.value : this.lastUpdated,
+      icon: data.icon.present ? data.icon.value : this.icon,
     );
   }
 
@@ -256,14 +211,13 @@ class CategoryTable extends DataClass implements Insertable<CategoryTable> {
           ..write('id: $id, ')
           ..write('categoryId: $categoryId, ')
           ..write('name: $name, ')
-          ..write('iconUrl: $iconUrl, ')
-          ..write('lastUpdated: $lastUpdated')
+          ..write('icon: $icon')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, categoryId, name, iconUrl, lastUpdated);
+  int get hashCode => Object.hash(id, categoryId, name, icon);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -271,46 +225,39 @@ class CategoryTable extends DataClass implements Insertable<CategoryTable> {
           other.id == this.id &&
           other.categoryId == this.categoryId &&
           other.name == this.name &&
-          other.iconUrl == this.iconUrl &&
-          other.lastUpdated == this.lastUpdated);
+          other.icon == this.icon);
 }
 
 class CategoriesCompanion extends UpdateCompanion<CategoryTable> {
   final Value<int> id;
   final Value<int> categoryId;
   final Value<String> name;
-  final Value<String> iconUrl;
-  final Value<DateTime> lastUpdated;
+  final Value<String> icon;
   const CategoriesCompanion({
     this.id = const Value.absent(),
     this.categoryId = const Value.absent(),
     this.name = const Value.absent(),
-    this.iconUrl = const Value.absent(),
-    this.lastUpdated = const Value.absent(),
+    this.icon = const Value.absent(),
   });
   CategoriesCompanion.insert({
     this.id = const Value.absent(),
     required int categoryId,
     required String name,
-    required String iconUrl,
-    required DateTime lastUpdated,
+    required String icon,
   }) : categoryId = Value(categoryId),
        name = Value(name),
-       iconUrl = Value(iconUrl),
-       lastUpdated = Value(lastUpdated);
+       icon = Value(icon);
   static Insertable<CategoryTable> custom({
     Expression<int>? id,
     Expression<int>? categoryId,
     Expression<String>? name,
-    Expression<String>? iconUrl,
-    Expression<DateTime>? lastUpdated,
+    Expression<String>? icon,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (categoryId != null) 'category_id': categoryId,
       if (name != null) 'name': name,
-      if (iconUrl != null) 'icon_url': iconUrl,
-      if (lastUpdated != null) 'last_updated': lastUpdated,
+      if (icon != null) 'icon': icon,
     });
   }
 
@@ -318,15 +265,13 @@ class CategoriesCompanion extends UpdateCompanion<CategoryTable> {
     Value<int>? id,
     Value<int>? categoryId,
     Value<String>? name,
-    Value<String>? iconUrl,
-    Value<DateTime>? lastUpdated,
+    Value<String>? icon,
   }) {
     return CategoriesCompanion(
       id: id ?? this.id,
       categoryId: categoryId ?? this.categoryId,
       name: name ?? this.name,
-      iconUrl: iconUrl ?? this.iconUrl,
-      lastUpdated: lastUpdated ?? this.lastUpdated,
+      icon: icon ?? this.icon,
     );
   }
 
@@ -342,11 +287,8 @@ class CategoriesCompanion extends UpdateCompanion<CategoryTable> {
     if (name.present) {
       map['name'] = Variable<String>(name.value);
     }
-    if (iconUrl.present) {
-      map['icon_url'] = Variable<String>(iconUrl.value);
-    }
-    if (lastUpdated.present) {
-      map['last_updated'] = Variable<DateTime>(lastUpdated.value);
+    if (icon.present) {
+      map['icon'] = Variable<String>(icon.value);
     }
     return map;
   }
@@ -357,8 +299,7 @@ class CategoriesCompanion extends UpdateCompanion<CategoryTable> {
           ..write('id: $id, ')
           ..write('categoryId: $categoryId, ')
           ..write('name: $name, ')
-          ..write('iconUrl: $iconUrl, ')
-          ..write('lastUpdated: $lastUpdated')
+          ..write('icon: $icon')
           ..write(')'))
         .toString();
   }
@@ -395,6 +336,20 @@ class $ProductsTable extends Products
     requiredDuringInsert: true,
     defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
   );
+  static const VerificationMeta _categoryIdMeta = const VerificationMeta(
+    'categoryId',
+  );
+  @override
+  late final GeneratedColumn<int> categoryId = GeneratedColumn<int>(
+    'category_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES categories (category_id)',
+    ),
+  );
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
@@ -424,10 +379,10 @@ class $ProductsTable extends Products
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _colorMeta = const VerificationMeta('color');
+  static const VerificationMeta _colourMeta = const VerificationMeta('colour');
   @override
-  late final GeneratedColumn<String> color = GeneratedColumn<String>(
-    'color',
+  late final GeneratedColumn<String> colour = GeneratedColumn<String>(
+    'colour',
     aliasedName,
     false,
     type: DriftSqlType.string,
@@ -442,30 +397,16 @@ class $ProductsTable extends Products
     type: DriftSqlType.double,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _mainImageUrlMeta = const VerificationMeta(
-    'mainImageUrl',
+  static const VerificationMeta _mainImageMeta = const VerificationMeta(
+    'mainImage',
   );
   @override
-  late final GeneratedColumn<String> mainImageUrl = GeneratedColumn<String>(
-    'main_image_url',
+  late final GeneratedColumn<String> mainImage = GeneratedColumn<String>(
+    'main_image',
     aliasedName,
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
-  );
-  static const VerificationMeta _categoryIdMeta = const VerificationMeta(
-    'categoryId',
-  );
-  @override
-  late final GeneratedColumn<int> categoryId = GeneratedColumn<int>(
-    'category_id',
-    aliasedName,
-    false,
-    type: DriftSqlType.int,
-    requiredDuringInsert: true,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'REFERENCES categories (category_id)',
-    ),
   );
   static const VerificationMeta _soldCountMeta = const VerificationMeta(
     'soldCount',
@@ -479,30 +420,18 @@ class $ProductsTable extends Products
     requiredDuringInsert: false,
     defaultValue: const Constant(0),
   );
-  static const VerificationMeta _lastUpdatedMeta = const VerificationMeta(
-    'lastUpdated',
-  );
-  @override
-  late final GeneratedColumn<DateTime> lastUpdated = GeneratedColumn<DateTime>(
-    'last_updated',
-    aliasedName,
-    false,
-    type: DriftSqlType.dateTime,
-    requiredDuringInsert: true,
-  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
     productId,
+    categoryId,
     name,
     details,
     size,
-    color,
+    colour,
     price,
-    mainImageUrl,
-    categoryId,
+    mainImage,
     soldCount,
-    lastUpdated,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -526,6 +455,14 @@ class $ProductsTable extends Products
       );
     } else if (isInserting) {
       context.missing(_productIdMeta);
+    }
+    if (data.containsKey('category_id')) {
+      context.handle(
+        _categoryIdMeta,
+        categoryId.isAcceptableOrUnknown(data['category_id']!, _categoryIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_categoryIdMeta);
     }
     if (data.containsKey('name')) {
       context.handle(
@@ -551,13 +488,13 @@ class $ProductsTable extends Products
     } else if (isInserting) {
       context.missing(_sizeMeta);
     }
-    if (data.containsKey('color')) {
+    if (data.containsKey('colour')) {
       context.handle(
-        _colorMeta,
-        color.isAcceptableOrUnknown(data['color']!, _colorMeta),
+        _colourMeta,
+        colour.isAcceptableOrUnknown(data['colour']!, _colourMeta),
       );
     } else if (isInserting) {
-      context.missing(_colorMeta);
+      context.missing(_colourMeta);
     }
     if (data.containsKey('price')) {
       context.handle(
@@ -567,41 +504,19 @@ class $ProductsTable extends Products
     } else if (isInserting) {
       context.missing(_priceMeta);
     }
-    if (data.containsKey('main_image_url')) {
+    if (data.containsKey('main_image')) {
       context.handle(
-        _mainImageUrlMeta,
-        mainImageUrl.isAcceptableOrUnknown(
-          data['main_image_url']!,
-          _mainImageUrlMeta,
-        ),
+        _mainImageMeta,
+        mainImage.isAcceptableOrUnknown(data['main_image']!, _mainImageMeta),
       );
     } else if (isInserting) {
-      context.missing(_mainImageUrlMeta);
-    }
-    if (data.containsKey('category_id')) {
-      context.handle(
-        _categoryIdMeta,
-        categoryId.isAcceptableOrUnknown(data['category_id']!, _categoryIdMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_categoryIdMeta);
+      context.missing(_mainImageMeta);
     }
     if (data.containsKey('sold_count')) {
       context.handle(
         _soldCountMeta,
         soldCount.isAcceptableOrUnknown(data['sold_count']!, _soldCountMeta),
       );
-    }
-    if (data.containsKey('last_updated')) {
-      context.handle(
-        _lastUpdatedMeta,
-        lastUpdated.isAcceptableOrUnknown(
-          data['last_updated']!,
-          _lastUpdatedMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_lastUpdatedMeta);
     }
     return context;
   }
@@ -622,6 +537,11 @@ class $ProductsTable extends Products
             DriftSqlType.int,
             data['${effectivePrefix}product_id'],
           )!,
+      categoryId:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.int,
+            data['${effectivePrefix}category_id'],
+          )!,
       name:
           attachedDatabase.typeMapping.read(
             DriftSqlType.string,
@@ -637,35 +557,25 @@ class $ProductsTable extends Products
             DriftSqlType.string,
             data['${effectivePrefix}size'],
           )!,
-      color:
+      colour:
           attachedDatabase.typeMapping.read(
             DriftSqlType.string,
-            data['${effectivePrefix}color'],
+            data['${effectivePrefix}colour'],
           )!,
       price:
           attachedDatabase.typeMapping.read(
             DriftSqlType.double,
             data['${effectivePrefix}price'],
           )!,
-      mainImageUrl:
+      mainImage:
           attachedDatabase.typeMapping.read(
             DriftSqlType.string,
-            data['${effectivePrefix}main_image_url'],
-          )!,
-      categoryId:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.int,
-            data['${effectivePrefix}category_id'],
+            data['${effectivePrefix}main_image'],
           )!,
       soldCount:
           attachedDatabase.typeMapping.read(
             DriftSqlType.int,
             data['${effectivePrefix}sold_count'],
-          )!,
-      lastUpdated:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.dateTime,
-            data['${effectivePrefix}last_updated'],
           )!,
     );
   }
@@ -679,42 +589,39 @@ class $ProductsTable extends Products
 class ProductTable extends DataClass implements Insertable<ProductTable> {
   final int id;
   final int productId;
+  final int categoryId;
   final String name;
   final String details;
   final String size;
-  final String color;
+  final String colour;
   final double price;
-  final String mainImageUrl;
-  final int categoryId;
+  final String mainImage;
   final int soldCount;
-  final DateTime lastUpdated;
   const ProductTable({
     required this.id,
     required this.productId,
+    required this.categoryId,
     required this.name,
     required this.details,
     required this.size,
-    required this.color,
+    required this.colour,
     required this.price,
-    required this.mainImageUrl,
-    required this.categoryId,
+    required this.mainImage,
     required this.soldCount,
-    required this.lastUpdated,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['product_id'] = Variable<int>(productId);
+    map['category_id'] = Variable<int>(categoryId);
     map['name'] = Variable<String>(name);
     map['details'] = Variable<String>(details);
     map['size'] = Variable<String>(size);
-    map['color'] = Variable<String>(color);
+    map['colour'] = Variable<String>(colour);
     map['price'] = Variable<double>(price);
-    map['main_image_url'] = Variable<String>(mainImageUrl);
-    map['category_id'] = Variable<int>(categoryId);
+    map['main_image'] = Variable<String>(mainImage);
     map['sold_count'] = Variable<int>(soldCount);
-    map['last_updated'] = Variable<DateTime>(lastUpdated);
     return map;
   }
 
@@ -722,15 +629,14 @@ class ProductTable extends DataClass implements Insertable<ProductTable> {
     return ProductsCompanion(
       id: Value(id),
       productId: Value(productId),
+      categoryId: Value(categoryId),
       name: Value(name),
       details: Value(details),
       size: Value(size),
-      color: Value(color),
+      colour: Value(colour),
       price: Value(price),
-      mainImageUrl: Value(mainImageUrl),
-      categoryId: Value(categoryId),
+      mainImage: Value(mainImage),
       soldCount: Value(soldCount),
-      lastUpdated: Value(lastUpdated),
     );
   }
 
@@ -742,15 +648,14 @@ class ProductTable extends DataClass implements Insertable<ProductTable> {
     return ProductTable(
       id: serializer.fromJson<int>(json['id']),
       productId: serializer.fromJson<int>(json['productId']),
+      categoryId: serializer.fromJson<int>(json['categoryId']),
       name: serializer.fromJson<String>(json['name']),
       details: serializer.fromJson<String>(json['details']),
       size: serializer.fromJson<String>(json['size']),
-      color: serializer.fromJson<String>(json['color']),
+      colour: serializer.fromJson<String>(json['colour']),
       price: serializer.fromJson<double>(json['price']),
-      mainImageUrl: serializer.fromJson<String>(json['mainImageUrl']),
-      categoryId: serializer.fromJson<int>(json['categoryId']),
+      mainImage: serializer.fromJson<String>(json['mainImage']),
       soldCount: serializer.fromJson<int>(json['soldCount']),
-      lastUpdated: serializer.fromJson<DateTime>(json['lastUpdated']),
     );
   }
   @override
@@ -759,61 +664,53 @@ class ProductTable extends DataClass implements Insertable<ProductTable> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'productId': serializer.toJson<int>(productId),
+      'categoryId': serializer.toJson<int>(categoryId),
       'name': serializer.toJson<String>(name),
       'details': serializer.toJson<String>(details),
       'size': serializer.toJson<String>(size),
-      'color': serializer.toJson<String>(color),
+      'colour': serializer.toJson<String>(colour),
       'price': serializer.toJson<double>(price),
-      'mainImageUrl': serializer.toJson<String>(mainImageUrl),
-      'categoryId': serializer.toJson<int>(categoryId),
+      'mainImage': serializer.toJson<String>(mainImage),
       'soldCount': serializer.toJson<int>(soldCount),
-      'lastUpdated': serializer.toJson<DateTime>(lastUpdated),
     };
   }
 
   ProductTable copyWith({
     int? id,
     int? productId,
+    int? categoryId,
     String? name,
     String? details,
     String? size,
-    String? color,
+    String? colour,
     double? price,
-    String? mainImageUrl,
-    int? categoryId,
+    String? mainImage,
     int? soldCount,
-    DateTime? lastUpdated,
   }) => ProductTable(
     id: id ?? this.id,
     productId: productId ?? this.productId,
+    categoryId: categoryId ?? this.categoryId,
     name: name ?? this.name,
     details: details ?? this.details,
     size: size ?? this.size,
-    color: color ?? this.color,
+    colour: colour ?? this.colour,
     price: price ?? this.price,
-    mainImageUrl: mainImageUrl ?? this.mainImageUrl,
-    categoryId: categoryId ?? this.categoryId,
+    mainImage: mainImage ?? this.mainImage,
     soldCount: soldCount ?? this.soldCount,
-    lastUpdated: lastUpdated ?? this.lastUpdated,
   );
   ProductTable copyWithCompanion(ProductsCompanion data) {
     return ProductTable(
       id: data.id.present ? data.id.value : this.id,
       productId: data.productId.present ? data.productId.value : this.productId,
+      categoryId:
+          data.categoryId.present ? data.categoryId.value : this.categoryId,
       name: data.name.present ? data.name.value : this.name,
       details: data.details.present ? data.details.value : this.details,
       size: data.size.present ? data.size.value : this.size,
-      color: data.color.present ? data.color.value : this.color,
+      colour: data.colour.present ? data.colour.value : this.colour,
       price: data.price.present ? data.price.value : this.price,
-      mainImageUrl:
-          data.mainImageUrl.present
-              ? data.mainImageUrl.value
-              : this.mainImageUrl,
-      categoryId:
-          data.categoryId.present ? data.categoryId.value : this.categoryId,
+      mainImage: data.mainImage.present ? data.mainImage.value : this.mainImage,
       soldCount: data.soldCount.present ? data.soldCount.value : this.soldCount,
-      lastUpdated:
-          data.lastUpdated.present ? data.lastUpdated.value : this.lastUpdated,
     );
   }
 
@@ -822,15 +719,14 @@ class ProductTable extends DataClass implements Insertable<ProductTable> {
     return (StringBuffer('ProductTable(')
           ..write('id: $id, ')
           ..write('productId: $productId, ')
+          ..write('categoryId: $categoryId, ')
           ..write('name: $name, ')
           ..write('details: $details, ')
           ..write('size: $size, ')
-          ..write('color: $color, ')
+          ..write('colour: $colour, ')
           ..write('price: $price, ')
-          ..write('mainImageUrl: $mainImageUrl, ')
-          ..write('categoryId: $categoryId, ')
-          ..write('soldCount: $soldCount, ')
-          ..write('lastUpdated: $lastUpdated')
+          ..write('mainImage: $mainImage, ')
+          ..write('soldCount: $soldCount')
           ..write(')'))
         .toString();
   }
@@ -839,15 +735,14 @@ class ProductTable extends DataClass implements Insertable<ProductTable> {
   int get hashCode => Object.hash(
     id,
     productId,
+    categoryId,
     name,
     details,
     size,
-    color,
+    colour,
     price,
-    mainImageUrl,
-    categoryId,
+    mainImage,
     soldCount,
-    lastUpdated,
   );
   @override
   bool operator ==(Object other) =>
@@ -855,116 +750,107 @@ class ProductTable extends DataClass implements Insertable<ProductTable> {
       (other is ProductTable &&
           other.id == this.id &&
           other.productId == this.productId &&
+          other.categoryId == this.categoryId &&
           other.name == this.name &&
           other.details == this.details &&
           other.size == this.size &&
-          other.color == this.color &&
+          other.colour == this.colour &&
           other.price == this.price &&
-          other.mainImageUrl == this.mainImageUrl &&
-          other.categoryId == this.categoryId &&
-          other.soldCount == this.soldCount &&
-          other.lastUpdated == this.lastUpdated);
+          other.mainImage == this.mainImage &&
+          other.soldCount == this.soldCount);
 }
 
 class ProductsCompanion extends UpdateCompanion<ProductTable> {
   final Value<int> id;
   final Value<int> productId;
+  final Value<int> categoryId;
   final Value<String> name;
   final Value<String> details;
   final Value<String> size;
-  final Value<String> color;
+  final Value<String> colour;
   final Value<double> price;
-  final Value<String> mainImageUrl;
-  final Value<int> categoryId;
+  final Value<String> mainImage;
   final Value<int> soldCount;
-  final Value<DateTime> lastUpdated;
   const ProductsCompanion({
     this.id = const Value.absent(),
     this.productId = const Value.absent(),
+    this.categoryId = const Value.absent(),
     this.name = const Value.absent(),
     this.details = const Value.absent(),
     this.size = const Value.absent(),
-    this.color = const Value.absent(),
+    this.colour = const Value.absent(),
     this.price = const Value.absent(),
-    this.mainImageUrl = const Value.absent(),
-    this.categoryId = const Value.absent(),
+    this.mainImage = const Value.absent(),
     this.soldCount = const Value.absent(),
-    this.lastUpdated = const Value.absent(),
   });
   ProductsCompanion.insert({
     this.id = const Value.absent(),
     required int productId,
+    required int categoryId,
     required String name,
     required String details,
     required String size,
-    required String color,
+    required String colour,
     required double price,
-    required String mainImageUrl,
-    required int categoryId,
+    required String mainImage,
     this.soldCount = const Value.absent(),
-    required DateTime lastUpdated,
   }) : productId = Value(productId),
+       categoryId = Value(categoryId),
        name = Value(name),
        details = Value(details),
        size = Value(size),
-       color = Value(color),
+       colour = Value(colour),
        price = Value(price),
-       mainImageUrl = Value(mainImageUrl),
-       categoryId = Value(categoryId),
-       lastUpdated = Value(lastUpdated);
+       mainImage = Value(mainImage);
   static Insertable<ProductTable> custom({
     Expression<int>? id,
     Expression<int>? productId,
+    Expression<int>? categoryId,
     Expression<String>? name,
     Expression<String>? details,
     Expression<String>? size,
-    Expression<String>? color,
+    Expression<String>? colour,
     Expression<double>? price,
-    Expression<String>? mainImageUrl,
-    Expression<int>? categoryId,
+    Expression<String>? mainImage,
     Expression<int>? soldCount,
-    Expression<DateTime>? lastUpdated,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (productId != null) 'product_id': productId,
+      if (categoryId != null) 'category_id': categoryId,
       if (name != null) 'name': name,
       if (details != null) 'details': details,
       if (size != null) 'size': size,
-      if (color != null) 'color': color,
+      if (colour != null) 'colour': colour,
       if (price != null) 'price': price,
-      if (mainImageUrl != null) 'main_image_url': mainImageUrl,
-      if (categoryId != null) 'category_id': categoryId,
+      if (mainImage != null) 'main_image': mainImage,
       if (soldCount != null) 'sold_count': soldCount,
-      if (lastUpdated != null) 'last_updated': lastUpdated,
     });
   }
 
   ProductsCompanion copyWith({
     Value<int>? id,
     Value<int>? productId,
+    Value<int>? categoryId,
     Value<String>? name,
     Value<String>? details,
     Value<String>? size,
-    Value<String>? color,
+    Value<String>? colour,
     Value<double>? price,
-    Value<String>? mainImageUrl,
-    Value<int>? categoryId,
+    Value<String>? mainImage,
     Value<int>? soldCount,
-    Value<DateTime>? lastUpdated,
   }) {
     return ProductsCompanion(
       id: id ?? this.id,
       productId: productId ?? this.productId,
+      categoryId: categoryId ?? this.categoryId,
       name: name ?? this.name,
       details: details ?? this.details,
       size: size ?? this.size,
-      color: color ?? this.color,
+      colour: colour ?? this.colour,
       price: price ?? this.price,
-      mainImageUrl: mainImageUrl ?? this.mainImageUrl,
-      categoryId: categoryId ?? this.categoryId,
+      mainImage: mainImage ?? this.mainImage,
       soldCount: soldCount ?? this.soldCount,
-      lastUpdated: lastUpdated ?? this.lastUpdated,
     );
   }
 
@@ -977,6 +863,9 @@ class ProductsCompanion extends UpdateCompanion<ProductTable> {
     if (productId.present) {
       map['product_id'] = Variable<int>(productId.value);
     }
+    if (categoryId.present) {
+      map['category_id'] = Variable<int>(categoryId.value);
+    }
     if (name.present) {
       map['name'] = Variable<String>(name.value);
     }
@@ -986,23 +875,17 @@ class ProductsCompanion extends UpdateCompanion<ProductTable> {
     if (size.present) {
       map['size'] = Variable<String>(size.value);
     }
-    if (color.present) {
-      map['color'] = Variable<String>(color.value);
+    if (colour.present) {
+      map['colour'] = Variable<String>(colour.value);
     }
     if (price.present) {
       map['price'] = Variable<double>(price.value);
     }
-    if (mainImageUrl.present) {
-      map['main_image_url'] = Variable<String>(mainImageUrl.value);
-    }
-    if (categoryId.present) {
-      map['category_id'] = Variable<int>(categoryId.value);
+    if (mainImage.present) {
+      map['main_image'] = Variable<String>(mainImage.value);
     }
     if (soldCount.present) {
       map['sold_count'] = Variable<int>(soldCount.value);
-    }
-    if (lastUpdated.present) {
-      map['last_updated'] = Variable<DateTime>(lastUpdated.value);
     }
     return map;
   }
@@ -1012,15 +895,14 @@ class ProductsCompanion extends UpdateCompanion<ProductTable> {
     return (StringBuffer('ProductsCompanion(')
           ..write('id: $id, ')
           ..write('productId: $productId, ')
+          ..write('categoryId: $categoryId, ')
           ..write('name: $name, ')
           ..write('details: $details, ')
           ..write('size: $size, ')
-          ..write('color: $color, ')
+          ..write('colour: $colour, ')
           ..write('price: $price, ')
-          ..write('mainImageUrl: $mainImageUrl, ')
-          ..write('categoryId: $categoryId, ')
-          ..write('soldCount: $soldCount, ')
-          ..write('lastUpdated: $lastUpdated')
+          ..write('mainImage: $mainImage, ')
+          ..write('soldCount: $soldCount')
           ..write(')'))
         .toString();
   }
@@ -1070,13 +952,26 @@ class $ReviewsTable extends Reviews with TableInfo<$ReviewsTable, ReviewTable> {
       'REFERENCES products (product_id)',
     ),
   );
-  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
   @override
-  late final GeneratedColumn<int> userId = GeneratedColumn<int>(
-    'user_id',
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
     aliasedName,
     false,
-    type: DriftSqlType.int,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _modifiedAtMeta = const VerificationMeta(
+    'modifiedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> modifiedAt = GeneratedColumn<DateTime>(
+    'modified_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
     requiredDuringInsert: true,
   );
   static const VerificationMeta _firstNameMeta = const VerificationMeta(
@@ -1101,12 +996,10 @@ class $ReviewsTable extends Reviews with TableInfo<$ReviewsTable, ReviewTable> {
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _userImageMeta = const VerificationMeta(
-    'userImage',
-  );
+  static const VerificationMeta _imageMeta = const VerificationMeta('image');
   @override
-  late final GeneratedColumn<String> userImage = GeneratedColumn<String>(
-    'user_image',
+  late final GeneratedColumn<String> image = GeneratedColumn<String>(
+    'image',
     aliasedName,
     false,
     type: DriftSqlType.string,
@@ -1121,17 +1014,6 @@ class $ReviewsTable extends Reviews with TableInfo<$ReviewsTable, ReviewTable> {
     type: DriftSqlType.double,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _commentMeta = const VerificationMeta(
-    'comment',
-  );
-  @override
-  late final GeneratedColumn<String> comment = GeneratedColumn<String>(
-    'comment',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
   static const VerificationMeta _messageMeta = const VerificationMeta(
     'message',
   );
@@ -1143,54 +1025,18 @@ class $ReviewsTable extends Reviews with TableInfo<$ReviewsTable, ReviewTable> {
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _createdAtMeta = const VerificationMeta(
-    'createdAt',
-  );
-  @override
-  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
-    'created_at',
-    aliasedName,
-    false,
-    type: DriftSqlType.dateTime,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _modifiedAtMeta = const VerificationMeta(
-    'modifiedAt',
-  );
-  @override
-  late final GeneratedColumn<DateTime> modifiedAt = GeneratedColumn<DateTime>(
-    'modified_at',
-    aliasedName,
-    false,
-    type: DriftSqlType.dateTime,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _lastUpdatedMeta = const VerificationMeta(
-    'lastUpdated',
-  );
-  @override
-  late final GeneratedColumn<DateTime> lastUpdated = GeneratedColumn<DateTime>(
-    'last_updated',
-    aliasedName,
-    false,
-    type: DriftSqlType.dateTime,
-    requiredDuringInsert: true,
-  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
     reviewId,
     productId,
-    userId,
-    firstName,
-    lastName,
-    userImage,
-    rating,
-    comment,
-    message,
     createdAt,
     modifiedAt,
-    lastUpdated,
+    firstName,
+    lastName,
+    image,
+    rating,
+    message,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -1223,13 +1069,21 @@ class $ReviewsTable extends Reviews with TableInfo<$ReviewsTable, ReviewTable> {
     } else if (isInserting) {
       context.missing(_productIdMeta);
     }
-    if (data.containsKey('user_id')) {
+    if (data.containsKey('created_at')) {
       context.handle(
-        _userIdMeta,
-        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
       );
     } else if (isInserting) {
-      context.missing(_userIdMeta);
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('modified_at')) {
+      context.handle(
+        _modifiedAtMeta,
+        modifiedAt.isAcceptableOrUnknown(data['modified_at']!, _modifiedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_modifiedAtMeta);
     }
     if (data.containsKey('first_name')) {
       context.handle(
@@ -1247,13 +1101,13 @@ class $ReviewsTable extends Reviews with TableInfo<$ReviewsTable, ReviewTable> {
     } else if (isInserting) {
       context.missing(_lastNameMeta);
     }
-    if (data.containsKey('user_image')) {
+    if (data.containsKey('image')) {
       context.handle(
-        _userImageMeta,
-        userImage.isAcceptableOrUnknown(data['user_image']!, _userImageMeta),
+        _imageMeta,
+        image.isAcceptableOrUnknown(data['image']!, _imageMeta),
       );
     } else if (isInserting) {
-      context.missing(_userImageMeta);
+      context.missing(_imageMeta);
     }
     if (data.containsKey('rating')) {
       context.handle(
@@ -1263,14 +1117,6 @@ class $ReviewsTable extends Reviews with TableInfo<$ReviewsTable, ReviewTable> {
     } else if (isInserting) {
       context.missing(_ratingMeta);
     }
-    if (data.containsKey('comment')) {
-      context.handle(
-        _commentMeta,
-        comment.isAcceptableOrUnknown(data['comment']!, _commentMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_commentMeta);
-    }
     if (data.containsKey('message')) {
       context.handle(
         _messageMeta,
@@ -1278,33 +1124,6 @@ class $ReviewsTable extends Reviews with TableInfo<$ReviewsTable, ReviewTable> {
       );
     } else if (isInserting) {
       context.missing(_messageMeta);
-    }
-    if (data.containsKey('created_at')) {
-      context.handle(
-        _createdAtMeta,
-        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_createdAtMeta);
-    }
-    if (data.containsKey('modified_at')) {
-      context.handle(
-        _modifiedAtMeta,
-        modifiedAt.isAcceptableOrUnknown(data['modified_at']!, _modifiedAtMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_modifiedAtMeta);
-    }
-    if (data.containsKey('last_updated')) {
-      context.handle(
-        _lastUpdatedMeta,
-        lastUpdated.isAcceptableOrUnknown(
-          data['last_updated']!,
-          _lastUpdatedMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_lastUpdatedMeta);
     }
     return context;
   }
@@ -1330,10 +1149,15 @@ class $ReviewsTable extends Reviews with TableInfo<$ReviewsTable, ReviewTable> {
             DriftSqlType.int,
             data['${effectivePrefix}product_id'],
           )!,
-      userId:
+      createdAt:
           attachedDatabase.typeMapping.read(
-            DriftSqlType.int,
-            data['${effectivePrefix}user_id'],
+            DriftSqlType.dateTime,
+            data['${effectivePrefix}created_at'],
+          )!,
+      modifiedAt:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.dateTime,
+            data['${effectivePrefix}modified_at'],
           )!,
       firstName:
           attachedDatabase.typeMapping.read(
@@ -1345,40 +1169,20 @@ class $ReviewsTable extends Reviews with TableInfo<$ReviewsTable, ReviewTable> {
             DriftSqlType.string,
             data['${effectivePrefix}last_name'],
           )!,
-      userImage:
+      image:
           attachedDatabase.typeMapping.read(
             DriftSqlType.string,
-            data['${effectivePrefix}user_image'],
+            data['${effectivePrefix}image'],
           )!,
       rating:
           attachedDatabase.typeMapping.read(
             DriftSqlType.double,
             data['${effectivePrefix}rating'],
           )!,
-      comment:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.string,
-            data['${effectivePrefix}comment'],
-          )!,
       message:
           attachedDatabase.typeMapping.read(
             DriftSqlType.string,
             data['${effectivePrefix}message'],
-          )!,
-      createdAt:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.dateTime,
-            data['${effectivePrefix}created_at'],
-          )!,
-      modifiedAt:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.dateTime,
-            data['${effectivePrefix}modified_at'],
-          )!,
-      lastUpdated:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.dateTime,
-            data['${effectivePrefix}last_updated'],
           )!,
     );
   }
@@ -1393,30 +1197,24 @@ class ReviewTable extends DataClass implements Insertable<ReviewTable> {
   final int id;
   final int reviewId;
   final int productId;
-  final int userId;
-  final String firstName;
-  final String lastName;
-  final String userImage;
-  final double rating;
-  final String comment;
-  final String message;
   final DateTime createdAt;
   final DateTime modifiedAt;
-  final DateTime lastUpdated;
+  final String firstName;
+  final String lastName;
+  final String image;
+  final double rating;
+  final String message;
   const ReviewTable({
     required this.id,
     required this.reviewId,
     required this.productId,
-    required this.userId,
-    required this.firstName,
-    required this.lastName,
-    required this.userImage,
-    required this.rating,
-    required this.comment,
-    required this.message,
     required this.createdAt,
     required this.modifiedAt,
-    required this.lastUpdated,
+    required this.firstName,
+    required this.lastName,
+    required this.image,
+    required this.rating,
+    required this.message,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -1424,16 +1222,13 @@ class ReviewTable extends DataClass implements Insertable<ReviewTable> {
     map['id'] = Variable<int>(id);
     map['review_id'] = Variable<int>(reviewId);
     map['product_id'] = Variable<int>(productId);
-    map['user_id'] = Variable<int>(userId);
-    map['first_name'] = Variable<String>(firstName);
-    map['last_name'] = Variable<String>(lastName);
-    map['user_image'] = Variable<String>(userImage);
-    map['rating'] = Variable<double>(rating);
-    map['comment'] = Variable<String>(comment);
-    map['message'] = Variable<String>(message);
     map['created_at'] = Variable<DateTime>(createdAt);
     map['modified_at'] = Variable<DateTime>(modifiedAt);
-    map['last_updated'] = Variable<DateTime>(lastUpdated);
+    map['first_name'] = Variable<String>(firstName);
+    map['last_name'] = Variable<String>(lastName);
+    map['image'] = Variable<String>(image);
+    map['rating'] = Variable<double>(rating);
+    map['message'] = Variable<String>(message);
     return map;
   }
 
@@ -1442,16 +1237,13 @@ class ReviewTable extends DataClass implements Insertable<ReviewTable> {
       id: Value(id),
       reviewId: Value(reviewId),
       productId: Value(productId),
-      userId: Value(userId),
-      firstName: Value(firstName),
-      lastName: Value(lastName),
-      userImage: Value(userImage),
-      rating: Value(rating),
-      comment: Value(comment),
-      message: Value(message),
       createdAt: Value(createdAt),
       modifiedAt: Value(modifiedAt),
-      lastUpdated: Value(lastUpdated),
+      firstName: Value(firstName),
+      lastName: Value(lastName),
+      image: Value(image),
+      rating: Value(rating),
+      message: Value(message),
     );
   }
 
@@ -1464,16 +1256,13 @@ class ReviewTable extends DataClass implements Insertable<ReviewTable> {
       id: serializer.fromJson<int>(json['id']),
       reviewId: serializer.fromJson<int>(json['reviewId']),
       productId: serializer.fromJson<int>(json['productId']),
-      userId: serializer.fromJson<int>(json['userId']),
-      firstName: serializer.fromJson<String>(json['firstName']),
-      lastName: serializer.fromJson<String>(json['lastName']),
-      userImage: serializer.fromJson<String>(json['userImage']),
-      rating: serializer.fromJson<double>(json['rating']),
-      comment: serializer.fromJson<String>(json['comment']),
-      message: serializer.fromJson<String>(json['message']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       modifiedAt: serializer.fromJson<DateTime>(json['modifiedAt']),
-      lastUpdated: serializer.fromJson<DateTime>(json['lastUpdated']),
+      firstName: serializer.fromJson<String>(json['firstName']),
+      lastName: serializer.fromJson<String>(json['lastName']),
+      image: serializer.fromJson<String>(json['image']),
+      rating: serializer.fromJson<double>(json['rating']),
+      message: serializer.fromJson<String>(json['message']),
     );
   }
   @override
@@ -1483,16 +1272,13 @@ class ReviewTable extends DataClass implements Insertable<ReviewTable> {
       'id': serializer.toJson<int>(id),
       'reviewId': serializer.toJson<int>(reviewId),
       'productId': serializer.toJson<int>(productId),
-      'userId': serializer.toJson<int>(userId),
-      'firstName': serializer.toJson<String>(firstName),
-      'lastName': serializer.toJson<String>(lastName),
-      'userImage': serializer.toJson<String>(userImage),
-      'rating': serializer.toJson<double>(rating),
-      'comment': serializer.toJson<String>(comment),
-      'message': serializer.toJson<String>(message),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'modifiedAt': serializer.toJson<DateTime>(modifiedAt),
-      'lastUpdated': serializer.toJson<DateTime>(lastUpdated),
+      'firstName': serializer.toJson<String>(firstName),
+      'lastName': serializer.toJson<String>(lastName),
+      'image': serializer.toJson<String>(image),
+      'rating': serializer.toJson<double>(rating),
+      'message': serializer.toJson<String>(message),
     };
   }
 
@@ -1500,48 +1286,38 @@ class ReviewTable extends DataClass implements Insertable<ReviewTable> {
     int? id,
     int? reviewId,
     int? productId,
-    int? userId,
-    String? firstName,
-    String? lastName,
-    String? userImage,
-    double? rating,
-    String? comment,
-    String? message,
     DateTime? createdAt,
     DateTime? modifiedAt,
-    DateTime? lastUpdated,
+    String? firstName,
+    String? lastName,
+    String? image,
+    double? rating,
+    String? message,
   }) => ReviewTable(
     id: id ?? this.id,
     reviewId: reviewId ?? this.reviewId,
     productId: productId ?? this.productId,
-    userId: userId ?? this.userId,
-    firstName: firstName ?? this.firstName,
-    lastName: lastName ?? this.lastName,
-    userImage: userImage ?? this.userImage,
-    rating: rating ?? this.rating,
-    comment: comment ?? this.comment,
-    message: message ?? this.message,
     createdAt: createdAt ?? this.createdAt,
     modifiedAt: modifiedAt ?? this.modifiedAt,
-    lastUpdated: lastUpdated ?? this.lastUpdated,
+    firstName: firstName ?? this.firstName,
+    lastName: lastName ?? this.lastName,
+    image: image ?? this.image,
+    rating: rating ?? this.rating,
+    message: message ?? this.message,
   );
   ReviewTable copyWithCompanion(ReviewsCompanion data) {
     return ReviewTable(
       id: data.id.present ? data.id.value : this.id,
       reviewId: data.reviewId.present ? data.reviewId.value : this.reviewId,
       productId: data.productId.present ? data.productId.value : this.productId,
-      userId: data.userId.present ? data.userId.value : this.userId,
-      firstName: data.firstName.present ? data.firstName.value : this.firstName,
-      lastName: data.lastName.present ? data.lastName.value : this.lastName,
-      userImage: data.userImage.present ? data.userImage.value : this.userImage,
-      rating: data.rating.present ? data.rating.value : this.rating,
-      comment: data.comment.present ? data.comment.value : this.comment,
-      message: data.message.present ? data.message.value : this.message,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       modifiedAt:
           data.modifiedAt.present ? data.modifiedAt.value : this.modifiedAt,
-      lastUpdated:
-          data.lastUpdated.present ? data.lastUpdated.value : this.lastUpdated,
+      firstName: data.firstName.present ? data.firstName.value : this.firstName,
+      lastName: data.lastName.present ? data.lastName.value : this.lastName,
+      image: data.image.present ? data.image.value : this.image,
+      rating: data.rating.present ? data.rating.value : this.rating,
+      message: data.message.present ? data.message.value : this.message,
     );
   }
 
@@ -1551,16 +1327,13 @@ class ReviewTable extends DataClass implements Insertable<ReviewTable> {
           ..write('id: $id, ')
           ..write('reviewId: $reviewId, ')
           ..write('productId: $productId, ')
-          ..write('userId: $userId, ')
-          ..write('firstName: $firstName, ')
-          ..write('lastName: $lastName, ')
-          ..write('userImage: $userImage, ')
-          ..write('rating: $rating, ')
-          ..write('comment: $comment, ')
-          ..write('message: $message, ')
           ..write('createdAt: $createdAt, ')
           ..write('modifiedAt: $modifiedAt, ')
-          ..write('lastUpdated: $lastUpdated')
+          ..write('firstName: $firstName, ')
+          ..write('lastName: $lastName, ')
+          ..write('image: $image, ')
+          ..write('rating: $rating, ')
+          ..write('message: $message')
           ..write(')'))
         .toString();
   }
@@ -1570,16 +1343,13 @@ class ReviewTable extends DataClass implements Insertable<ReviewTable> {
     id,
     reviewId,
     productId,
-    userId,
-    firstName,
-    lastName,
-    userImage,
-    rating,
-    comment,
-    message,
     createdAt,
     modifiedAt,
-    lastUpdated,
+    firstName,
+    lastName,
+    image,
+    rating,
+    message,
   );
   @override
   bool operator ==(Object other) =>
@@ -1588,102 +1358,81 @@ class ReviewTable extends DataClass implements Insertable<ReviewTable> {
           other.id == this.id &&
           other.reviewId == this.reviewId &&
           other.productId == this.productId &&
-          other.userId == this.userId &&
-          other.firstName == this.firstName &&
-          other.lastName == this.lastName &&
-          other.userImage == this.userImage &&
-          other.rating == this.rating &&
-          other.comment == this.comment &&
-          other.message == this.message &&
           other.createdAt == this.createdAt &&
           other.modifiedAt == this.modifiedAt &&
-          other.lastUpdated == this.lastUpdated);
+          other.firstName == this.firstName &&
+          other.lastName == this.lastName &&
+          other.image == this.image &&
+          other.rating == this.rating &&
+          other.message == this.message);
 }
 
 class ReviewsCompanion extends UpdateCompanion<ReviewTable> {
   final Value<int> id;
   final Value<int> reviewId;
   final Value<int> productId;
-  final Value<int> userId;
-  final Value<String> firstName;
-  final Value<String> lastName;
-  final Value<String> userImage;
-  final Value<double> rating;
-  final Value<String> comment;
-  final Value<String> message;
   final Value<DateTime> createdAt;
   final Value<DateTime> modifiedAt;
-  final Value<DateTime> lastUpdated;
+  final Value<String> firstName;
+  final Value<String> lastName;
+  final Value<String> image;
+  final Value<double> rating;
+  final Value<String> message;
   const ReviewsCompanion({
     this.id = const Value.absent(),
     this.reviewId = const Value.absent(),
     this.productId = const Value.absent(),
-    this.userId = const Value.absent(),
-    this.firstName = const Value.absent(),
-    this.lastName = const Value.absent(),
-    this.userImage = const Value.absent(),
-    this.rating = const Value.absent(),
-    this.comment = const Value.absent(),
-    this.message = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.modifiedAt = const Value.absent(),
-    this.lastUpdated = const Value.absent(),
+    this.firstName = const Value.absent(),
+    this.lastName = const Value.absent(),
+    this.image = const Value.absent(),
+    this.rating = const Value.absent(),
+    this.message = const Value.absent(),
   });
   ReviewsCompanion.insert({
     this.id = const Value.absent(),
     required int reviewId,
     required int productId,
-    required int userId,
-    required String firstName,
-    required String lastName,
-    required String userImage,
-    required double rating,
-    required String comment,
-    required String message,
     required DateTime createdAt,
     required DateTime modifiedAt,
-    required DateTime lastUpdated,
+    required String firstName,
+    required String lastName,
+    required String image,
+    required double rating,
+    required String message,
   }) : reviewId = Value(reviewId),
        productId = Value(productId),
-       userId = Value(userId),
-       firstName = Value(firstName),
-       lastName = Value(lastName),
-       userImage = Value(userImage),
-       rating = Value(rating),
-       comment = Value(comment),
-       message = Value(message),
        createdAt = Value(createdAt),
        modifiedAt = Value(modifiedAt),
-       lastUpdated = Value(lastUpdated);
+       firstName = Value(firstName),
+       lastName = Value(lastName),
+       image = Value(image),
+       rating = Value(rating),
+       message = Value(message);
   static Insertable<ReviewTable> custom({
     Expression<int>? id,
     Expression<int>? reviewId,
     Expression<int>? productId,
-    Expression<int>? userId,
-    Expression<String>? firstName,
-    Expression<String>? lastName,
-    Expression<String>? userImage,
-    Expression<double>? rating,
-    Expression<String>? comment,
-    Expression<String>? message,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? modifiedAt,
-    Expression<DateTime>? lastUpdated,
+    Expression<String>? firstName,
+    Expression<String>? lastName,
+    Expression<String>? image,
+    Expression<double>? rating,
+    Expression<String>? message,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (reviewId != null) 'review_id': reviewId,
       if (productId != null) 'product_id': productId,
-      if (userId != null) 'user_id': userId,
-      if (firstName != null) 'first_name': firstName,
-      if (lastName != null) 'last_name': lastName,
-      if (userImage != null) 'user_image': userImage,
-      if (rating != null) 'rating': rating,
-      if (comment != null) 'comment': comment,
-      if (message != null) 'message': message,
       if (createdAt != null) 'created_at': createdAt,
       if (modifiedAt != null) 'modified_at': modifiedAt,
-      if (lastUpdated != null) 'last_updated': lastUpdated,
+      if (firstName != null) 'first_name': firstName,
+      if (lastName != null) 'last_name': lastName,
+      if (image != null) 'image': image,
+      if (rating != null) 'rating': rating,
+      if (message != null) 'message': message,
     });
   }
 
@@ -1691,31 +1440,25 @@ class ReviewsCompanion extends UpdateCompanion<ReviewTable> {
     Value<int>? id,
     Value<int>? reviewId,
     Value<int>? productId,
-    Value<int>? userId,
-    Value<String>? firstName,
-    Value<String>? lastName,
-    Value<String>? userImage,
-    Value<double>? rating,
-    Value<String>? comment,
-    Value<String>? message,
     Value<DateTime>? createdAt,
     Value<DateTime>? modifiedAt,
-    Value<DateTime>? lastUpdated,
+    Value<String>? firstName,
+    Value<String>? lastName,
+    Value<String>? image,
+    Value<double>? rating,
+    Value<String>? message,
   }) {
     return ReviewsCompanion(
       id: id ?? this.id,
       reviewId: reviewId ?? this.reviewId,
       productId: productId ?? this.productId,
-      userId: userId ?? this.userId,
-      firstName: firstName ?? this.firstName,
-      lastName: lastName ?? this.lastName,
-      userImage: userImage ?? this.userImage,
-      rating: rating ?? this.rating,
-      comment: comment ?? this.comment,
-      message: message ?? this.message,
       createdAt: createdAt ?? this.createdAt,
       modifiedAt: modifiedAt ?? this.modifiedAt,
-      lastUpdated: lastUpdated ?? this.lastUpdated,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      image: image ?? this.image,
+      rating: rating ?? this.rating,
+      message: message ?? this.message,
     );
   }
 
@@ -1731,8 +1474,11 @@ class ReviewsCompanion extends UpdateCompanion<ReviewTable> {
     if (productId.present) {
       map['product_id'] = Variable<int>(productId.value);
     }
-    if (userId.present) {
-      map['user_id'] = Variable<int>(userId.value);
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (modifiedAt.present) {
+      map['modified_at'] = Variable<DateTime>(modifiedAt.value);
     }
     if (firstName.present) {
       map['first_name'] = Variable<String>(firstName.value);
@@ -1740,26 +1486,14 @@ class ReviewsCompanion extends UpdateCompanion<ReviewTable> {
     if (lastName.present) {
       map['last_name'] = Variable<String>(lastName.value);
     }
-    if (userImage.present) {
-      map['user_image'] = Variable<String>(userImage.value);
+    if (image.present) {
+      map['image'] = Variable<String>(image.value);
     }
     if (rating.present) {
       map['rating'] = Variable<double>(rating.value);
     }
-    if (comment.present) {
-      map['comment'] = Variable<String>(comment.value);
-    }
     if (message.present) {
       map['message'] = Variable<String>(message.value);
-    }
-    if (createdAt.present) {
-      map['created_at'] = Variable<DateTime>(createdAt.value);
-    }
-    if (modifiedAt.present) {
-      map['modified_at'] = Variable<DateTime>(modifiedAt.value);
-    }
-    if (lastUpdated.present) {
-      map['last_updated'] = Variable<DateTime>(lastUpdated.value);
     }
     return map;
   }
@@ -1770,16 +1504,13 @@ class ReviewsCompanion extends UpdateCompanion<ReviewTable> {
           ..write('id: $id, ')
           ..write('reviewId: $reviewId, ')
           ..write('productId: $productId, ')
-          ..write('userId: $userId, ')
-          ..write('firstName: $firstName, ')
-          ..write('lastName: $lastName, ')
-          ..write('userImage: $userImage, ')
-          ..write('rating: $rating, ')
-          ..write('comment: $comment, ')
-          ..write('message: $message, ')
           ..write('createdAt: $createdAt, ')
           ..write('modifiedAt: $modifiedAt, ')
-          ..write('lastUpdated: $lastUpdated')
+          ..write('firstName: $firstName, ')
+          ..write('lastName: $lastName, ')
+          ..write('image: $image, ')
+          ..write('rating: $rating, ')
+          ..write('message: $message')
           ..write(')'))
         .toString();
   }
@@ -1818,30 +1549,17 @@ class $ProductImagesTable extends ProductImages
       'REFERENCES products (product_id)',
     ),
   );
-  static const VerificationMeta _imageUrlMeta = const VerificationMeta(
-    'imageUrl',
-  );
+  static const VerificationMeta _imageMeta = const VerificationMeta('image');
   @override
-  late final GeneratedColumn<String> imageUrl = GeneratedColumn<String>(
-    'image_url',
+  late final GeneratedColumn<String> image = GeneratedColumn<String>(
+    'image',
     aliasedName,
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _lastUpdatedMeta = const VerificationMeta(
-    'lastUpdated',
-  );
   @override
-  late final GeneratedColumn<DateTime> lastUpdated = GeneratedColumn<DateTime>(
-    'last_updated',
-    aliasedName,
-    false,
-    type: DriftSqlType.dateTime,
-    requiredDuringInsert: true,
-  );
-  @override
-  List<GeneratedColumn> get $columns => [id, productId, imageUrl, lastUpdated];
+  List<GeneratedColumn> get $columns => [id, productId, image];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -1865,24 +1583,13 @@ class $ProductImagesTable extends ProductImages
     } else if (isInserting) {
       context.missing(_productIdMeta);
     }
-    if (data.containsKey('image_url')) {
+    if (data.containsKey('image')) {
       context.handle(
-        _imageUrlMeta,
-        imageUrl.isAcceptableOrUnknown(data['image_url']!, _imageUrlMeta),
+        _imageMeta,
+        image.isAcceptableOrUnknown(data['image']!, _imageMeta),
       );
     } else if (isInserting) {
-      context.missing(_imageUrlMeta);
-    }
-    if (data.containsKey('last_updated')) {
-      context.handle(
-        _lastUpdatedMeta,
-        lastUpdated.isAcceptableOrUnknown(
-          data['last_updated']!,
-          _lastUpdatedMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_lastUpdatedMeta);
+      context.missing(_imageMeta);
     }
     return context;
   }
@@ -1903,15 +1610,10 @@ class $ProductImagesTable extends ProductImages
             DriftSqlType.int,
             data['${effectivePrefix}product_id'],
           )!,
-      imageUrl:
+      image:
           attachedDatabase.typeMapping.read(
             DriftSqlType.string,
-            data['${effectivePrefix}image_url'],
-          )!,
-      lastUpdated:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.dateTime,
-            data['${effectivePrefix}last_updated'],
+            data['${effectivePrefix}image'],
           )!,
     );
   }
@@ -1926,21 +1628,18 @@ class ProductImageTable extends DataClass
     implements Insertable<ProductImageTable> {
   final int id;
   final int productId;
-  final String imageUrl;
-  final DateTime lastUpdated;
+  final String image;
   const ProductImageTable({
     required this.id,
     required this.productId,
-    required this.imageUrl,
-    required this.lastUpdated,
+    required this.image,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['product_id'] = Variable<int>(productId);
-    map['image_url'] = Variable<String>(imageUrl);
-    map['last_updated'] = Variable<DateTime>(lastUpdated);
+    map['image'] = Variable<String>(image);
     return map;
   }
 
@@ -1948,8 +1647,7 @@ class ProductImageTable extends DataClass
     return ProductImagesCompanion(
       id: Value(id),
       productId: Value(productId),
-      imageUrl: Value(imageUrl),
-      lastUpdated: Value(lastUpdated),
+      image: Value(image),
     );
   }
 
@@ -1961,8 +1659,7 @@ class ProductImageTable extends DataClass
     return ProductImageTable(
       id: serializer.fromJson<int>(json['id']),
       productId: serializer.fromJson<int>(json['productId']),
-      imageUrl: serializer.fromJson<String>(json['imageUrl']),
-      lastUpdated: serializer.fromJson<DateTime>(json['lastUpdated']),
+      image: serializer.fromJson<String>(json['image']),
     );
   }
   @override
@@ -1971,29 +1668,21 @@ class ProductImageTable extends DataClass
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'productId': serializer.toJson<int>(productId),
-      'imageUrl': serializer.toJson<String>(imageUrl),
-      'lastUpdated': serializer.toJson<DateTime>(lastUpdated),
+      'image': serializer.toJson<String>(image),
     };
   }
 
-  ProductImageTable copyWith({
-    int? id,
-    int? productId,
-    String? imageUrl,
-    DateTime? lastUpdated,
-  }) => ProductImageTable(
-    id: id ?? this.id,
-    productId: productId ?? this.productId,
-    imageUrl: imageUrl ?? this.imageUrl,
-    lastUpdated: lastUpdated ?? this.lastUpdated,
-  );
+  ProductImageTable copyWith({int? id, int? productId, String? image}) =>
+      ProductImageTable(
+        id: id ?? this.id,
+        productId: productId ?? this.productId,
+        image: image ?? this.image,
+      );
   ProductImageTable copyWithCompanion(ProductImagesCompanion data) {
     return ProductImageTable(
       id: data.id.present ? data.id.value : this.id,
       productId: data.productId.present ? data.productId.value : this.productId,
-      imageUrl: data.imageUrl.present ? data.imageUrl.value : this.imageUrl,
-      lastUpdated:
-          data.lastUpdated.present ? data.lastUpdated.value : this.lastUpdated,
+      image: data.image.present ? data.image.value : this.image,
     );
   }
 
@@ -2002,68 +1691,58 @@ class ProductImageTable extends DataClass
     return (StringBuffer('ProductImageTable(')
           ..write('id: $id, ')
           ..write('productId: $productId, ')
-          ..write('imageUrl: $imageUrl, ')
-          ..write('lastUpdated: $lastUpdated')
+          ..write('image: $image')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, productId, imageUrl, lastUpdated);
+  int get hashCode => Object.hash(id, productId, image);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is ProductImageTable &&
           other.id == this.id &&
           other.productId == this.productId &&
-          other.imageUrl == this.imageUrl &&
-          other.lastUpdated == this.lastUpdated);
+          other.image == this.image);
 }
 
 class ProductImagesCompanion extends UpdateCompanion<ProductImageTable> {
   final Value<int> id;
   final Value<int> productId;
-  final Value<String> imageUrl;
-  final Value<DateTime> lastUpdated;
+  final Value<String> image;
   const ProductImagesCompanion({
     this.id = const Value.absent(),
     this.productId = const Value.absent(),
-    this.imageUrl = const Value.absent(),
-    this.lastUpdated = const Value.absent(),
+    this.image = const Value.absent(),
   });
   ProductImagesCompanion.insert({
     this.id = const Value.absent(),
     required int productId,
-    required String imageUrl,
-    required DateTime lastUpdated,
+    required String image,
   }) : productId = Value(productId),
-       imageUrl = Value(imageUrl),
-       lastUpdated = Value(lastUpdated);
+       image = Value(image);
   static Insertable<ProductImageTable> custom({
     Expression<int>? id,
     Expression<int>? productId,
-    Expression<String>? imageUrl,
-    Expression<DateTime>? lastUpdated,
+    Expression<String>? image,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (productId != null) 'product_id': productId,
-      if (imageUrl != null) 'image_url': imageUrl,
-      if (lastUpdated != null) 'last_updated': lastUpdated,
+      if (image != null) 'image': image,
     });
   }
 
   ProductImagesCompanion copyWith({
     Value<int>? id,
     Value<int>? productId,
-    Value<String>? imageUrl,
-    Value<DateTime>? lastUpdated,
+    Value<String>? image,
   }) {
     return ProductImagesCompanion(
       id: id ?? this.id,
       productId: productId ?? this.productId,
-      imageUrl: imageUrl ?? this.imageUrl,
-      lastUpdated: lastUpdated ?? this.lastUpdated,
+      image: image ?? this.image,
     );
   }
 
@@ -2076,11 +1755,8 @@ class ProductImagesCompanion extends UpdateCompanion<ProductImageTable> {
     if (productId.present) {
       map['product_id'] = Variable<int>(productId.value);
     }
-    if (imageUrl.present) {
-      map['image_url'] = Variable<String>(imageUrl.value);
-    }
-    if (lastUpdated.present) {
-      map['last_updated'] = Variable<DateTime>(lastUpdated.value);
+    if (image.present) {
+      map['image'] = Variable<String>(image.value);
     }
     return map;
   }
@@ -2090,8 +1766,7 @@ class ProductImagesCompanion extends UpdateCompanion<ProductImageTable> {
     return (StringBuffer('ProductImagesCompanion(')
           ..write('id: $id, ')
           ..write('productId: $productId, ')
-          ..write('imageUrl: $imageUrl, ')
-          ..write('lastUpdated: $lastUpdated')
+          ..write('image: $image')
           ..write(')'))
         .toString();
   }
@@ -2121,16 +1796,14 @@ typedef $$CategoriesTableCreateCompanionBuilder =
       Value<int> id,
       required int categoryId,
       required String name,
-      required String iconUrl,
-      required DateTime lastUpdated,
+      required String icon,
     });
 typedef $$CategoriesTableUpdateCompanionBuilder =
     CategoriesCompanion Function({
       Value<int> id,
       Value<int> categoryId,
       Value<String> name,
-      Value<String> iconUrl,
-      Value<DateTime> lastUpdated,
+      Value<String> icon,
     });
 
 final class $$CategoriesTableReferences
@@ -2183,13 +1856,8 @@ class $$CategoriesTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get iconUrl => $composableBuilder(
-    column: $table.iconUrl,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<DateTime> get lastUpdated => $composableBuilder(
-    column: $table.lastUpdated,
+  ColumnFilters<String> get icon => $composableBuilder(
+    column: $table.icon,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -2243,13 +1911,8 @@ class $$CategoriesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get iconUrl => $composableBuilder(
-    column: $table.iconUrl,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<DateTime> get lastUpdated => $composableBuilder(
-    column: $table.lastUpdated,
+  ColumnOrderings<String> get icon => $composableBuilder(
+    column: $table.icon,
     builder: (column) => ColumnOrderings(column),
   );
 }
@@ -2274,13 +1937,8 @@ class $$CategoriesTableAnnotationComposer
   GeneratedColumn<String> get name =>
       $composableBuilder(column: $table.name, builder: (column) => column);
 
-  GeneratedColumn<String> get iconUrl =>
-      $composableBuilder(column: $table.iconUrl, builder: (column) => column);
-
-  GeneratedColumn<DateTime> get lastUpdated => $composableBuilder(
-    column: $table.lastUpdated,
-    builder: (column) => column,
-  );
+  GeneratedColumn<String> get icon =>
+      $composableBuilder(column: $table.icon, builder: (column) => column);
 
   Expression<T> productsRefs<T extends Object>(
     Expression<T> Function($$ProductsTableAnnotationComposer a) f,
@@ -2339,28 +1997,24 @@ class $$CategoriesTableTableManager
                 Value<int> id = const Value.absent(),
                 Value<int> categoryId = const Value.absent(),
                 Value<String> name = const Value.absent(),
-                Value<String> iconUrl = const Value.absent(),
-                Value<DateTime> lastUpdated = const Value.absent(),
+                Value<String> icon = const Value.absent(),
               }) => CategoriesCompanion(
                 id: id,
                 categoryId: categoryId,
                 name: name,
-                iconUrl: iconUrl,
-                lastUpdated: lastUpdated,
+                icon: icon,
               ),
           createCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
                 required int categoryId,
                 required String name,
-                required String iconUrl,
-                required DateTime lastUpdated,
+                required String icon,
               }) => CategoriesCompanion.insert(
                 id: id,
                 categoryId: categoryId,
                 name: name,
-                iconUrl: iconUrl,
-                lastUpdated: lastUpdated,
+                icon: icon,
               ),
           withReferenceMapper:
               (p0) =>
@@ -2427,29 +2081,27 @@ typedef $$ProductsTableCreateCompanionBuilder =
     ProductsCompanion Function({
       Value<int> id,
       required int productId,
+      required int categoryId,
       required String name,
       required String details,
       required String size,
-      required String color,
+      required String colour,
       required double price,
-      required String mainImageUrl,
-      required int categoryId,
+      required String mainImage,
       Value<int> soldCount,
-      required DateTime lastUpdated,
     });
 typedef $$ProductsTableUpdateCompanionBuilder =
     ProductsCompanion Function({
       Value<int> id,
       Value<int> productId,
+      Value<int> categoryId,
       Value<String> name,
       Value<String> details,
       Value<String> size,
-      Value<String> color,
+      Value<String> colour,
       Value<double> price,
-      Value<String> mainImageUrl,
-      Value<int> categoryId,
+      Value<String> mainImage,
       Value<int> soldCount,
-      Value<DateTime> lastUpdated,
     });
 
 final class $$ProductsTableReferences
@@ -2553,8 +2205,8 @@ class $$ProductsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get color => $composableBuilder(
-    column: $table.color,
+  ColumnFilters<String> get colour => $composableBuilder(
+    column: $table.colour,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -2563,18 +2215,13 @@ class $$ProductsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get mainImageUrl => $composableBuilder(
-    column: $table.mainImageUrl,
+  ColumnFilters<String> get mainImage => $composableBuilder(
+    column: $table.mainImage,
     builder: (column) => ColumnFilters(column),
   );
 
   ColumnFilters<int> get soldCount => $composableBuilder(
     column: $table.soldCount,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<DateTime> get lastUpdated => $composableBuilder(
-    column: $table.lastUpdated,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -2686,8 +2333,8 @@ class $$ProductsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get color => $composableBuilder(
-    column: $table.color,
+  ColumnOrderings<String> get colour => $composableBuilder(
+    column: $table.colour,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -2696,18 +2343,13 @@ class $$ProductsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get mainImageUrl => $composableBuilder(
-    column: $table.mainImageUrl,
+  ColumnOrderings<String> get mainImage => $composableBuilder(
+    column: $table.mainImage,
     builder: (column) => ColumnOrderings(column),
   );
 
   ColumnOrderings<int> get soldCount => $composableBuilder(
     column: $table.soldCount,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<DateTime> get lastUpdated => $composableBuilder(
-    column: $table.lastUpdated,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -2759,24 +2401,17 @@ class $$ProductsTableAnnotationComposer
   GeneratedColumn<String> get size =>
       $composableBuilder(column: $table.size, builder: (column) => column);
 
-  GeneratedColumn<String> get color =>
-      $composableBuilder(column: $table.color, builder: (column) => column);
+  GeneratedColumn<String> get colour =>
+      $composableBuilder(column: $table.colour, builder: (column) => column);
 
   GeneratedColumn<double> get price =>
       $composableBuilder(column: $table.price, builder: (column) => column);
 
-  GeneratedColumn<String> get mainImageUrl => $composableBuilder(
-    column: $table.mainImageUrl,
-    builder: (column) => column,
-  );
+  GeneratedColumn<String> get mainImage =>
+      $composableBuilder(column: $table.mainImage, builder: (column) => column);
 
   GeneratedColumn<int> get soldCount =>
       $composableBuilder(column: $table.soldCount, builder: (column) => column);
-
-  GeneratedColumn<DateTime> get lastUpdated => $composableBuilder(
-    column: $table.lastUpdated,
-    builder: (column) => column,
-  );
 
   $$CategoriesTableAnnotationComposer get categoryId {
     final $$CategoriesTableAnnotationComposer composer = $composerBuilder(
@@ -2886,53 +2521,49 @@ class $$ProductsTableTableManager
               ({
                 Value<int> id = const Value.absent(),
                 Value<int> productId = const Value.absent(),
+                Value<int> categoryId = const Value.absent(),
                 Value<String> name = const Value.absent(),
                 Value<String> details = const Value.absent(),
                 Value<String> size = const Value.absent(),
-                Value<String> color = const Value.absent(),
+                Value<String> colour = const Value.absent(),
                 Value<double> price = const Value.absent(),
-                Value<String> mainImageUrl = const Value.absent(),
-                Value<int> categoryId = const Value.absent(),
+                Value<String> mainImage = const Value.absent(),
                 Value<int> soldCount = const Value.absent(),
-                Value<DateTime> lastUpdated = const Value.absent(),
               }) => ProductsCompanion(
                 id: id,
                 productId: productId,
+                categoryId: categoryId,
                 name: name,
                 details: details,
                 size: size,
-                color: color,
+                colour: colour,
                 price: price,
-                mainImageUrl: mainImageUrl,
-                categoryId: categoryId,
+                mainImage: mainImage,
                 soldCount: soldCount,
-                lastUpdated: lastUpdated,
               ),
           createCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
                 required int productId,
+                required int categoryId,
                 required String name,
                 required String details,
                 required String size,
-                required String color,
+                required String colour,
                 required double price,
-                required String mainImageUrl,
-                required int categoryId,
+                required String mainImage,
                 Value<int> soldCount = const Value.absent(),
-                required DateTime lastUpdated,
               }) => ProductsCompanion.insert(
                 id: id,
                 productId: productId,
+                categoryId: categoryId,
                 name: name,
                 details: details,
                 size: size,
-                color: color,
+                colour: colour,
                 price: price,
-                mainImageUrl: mainImageUrl,
-                categoryId: categoryId,
+                mainImage: mainImage,
                 soldCount: soldCount,
-                lastUpdated: lastUpdated,
               ),
           withReferenceMapper:
               (p0) =>
@@ -3064,32 +2695,26 @@ typedef $$ReviewsTableCreateCompanionBuilder =
       Value<int> id,
       required int reviewId,
       required int productId,
-      required int userId,
-      required String firstName,
-      required String lastName,
-      required String userImage,
-      required double rating,
-      required String comment,
-      required String message,
       required DateTime createdAt,
       required DateTime modifiedAt,
-      required DateTime lastUpdated,
+      required String firstName,
+      required String lastName,
+      required String image,
+      required double rating,
+      required String message,
     });
 typedef $$ReviewsTableUpdateCompanionBuilder =
     ReviewsCompanion Function({
       Value<int> id,
       Value<int> reviewId,
       Value<int> productId,
-      Value<int> userId,
-      Value<String> firstName,
-      Value<String> lastName,
-      Value<String> userImage,
-      Value<double> rating,
-      Value<String> comment,
-      Value<String> message,
       Value<DateTime> createdAt,
       Value<DateTime> modifiedAt,
-      Value<DateTime> lastUpdated,
+      Value<String> firstName,
+      Value<String> lastName,
+      Value<String> image,
+      Value<double> rating,
+      Value<String> message,
     });
 
 final class $$ReviewsTableReferences
@@ -3135,8 +2760,13 @@ class $$ReviewsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<int> get userId => $composableBuilder(
-    column: $table.userId,
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get modifiedAt => $composableBuilder(
+    column: $table.modifiedAt,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -3150,8 +2780,8 @@ class $$ReviewsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get userImage => $composableBuilder(
-    column: $table.userImage,
+  ColumnFilters<String> get image => $composableBuilder(
+    column: $table.image,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -3160,28 +2790,8 @@ class $$ReviewsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get comment => $composableBuilder(
-    column: $table.comment,
-    builder: (column) => ColumnFilters(column),
-  );
-
   ColumnFilters<String> get message => $composableBuilder(
     column: $table.message,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<DateTime> get createdAt => $composableBuilder(
-    column: $table.createdAt,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<DateTime> get modifiedAt => $composableBuilder(
-    column: $table.modifiedAt,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<DateTime> get lastUpdated => $composableBuilder(
-    column: $table.lastUpdated,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -3228,8 +2838,13 @@ class $$ReviewsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<int> get userId => $composableBuilder(
-    column: $table.userId,
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get modifiedAt => $composableBuilder(
+    column: $table.modifiedAt,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -3243,8 +2858,8 @@ class $$ReviewsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get userImage => $composableBuilder(
-    column: $table.userImage,
+  ColumnOrderings<String> get image => $composableBuilder(
+    column: $table.image,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -3253,28 +2868,8 @@ class $$ReviewsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get comment => $composableBuilder(
-    column: $table.comment,
-    builder: (column) => ColumnOrderings(column),
-  );
-
   ColumnOrderings<String> get message => $composableBuilder(
     column: $table.message,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
-    column: $table.createdAt,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<DateTime> get modifiedAt => $composableBuilder(
-    column: $table.modifiedAt,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<DateTime> get lastUpdated => $composableBuilder(
-    column: $table.lastUpdated,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -3317,27 +2912,6 @@ class $$ReviewsTableAnnotationComposer
   GeneratedColumn<int> get reviewId =>
       $composableBuilder(column: $table.reviewId, builder: (column) => column);
 
-  GeneratedColumn<int> get userId =>
-      $composableBuilder(column: $table.userId, builder: (column) => column);
-
-  GeneratedColumn<String> get firstName =>
-      $composableBuilder(column: $table.firstName, builder: (column) => column);
-
-  GeneratedColumn<String> get lastName =>
-      $composableBuilder(column: $table.lastName, builder: (column) => column);
-
-  GeneratedColumn<String> get userImage =>
-      $composableBuilder(column: $table.userImage, builder: (column) => column);
-
-  GeneratedColumn<double> get rating =>
-      $composableBuilder(column: $table.rating, builder: (column) => column);
-
-  GeneratedColumn<String> get comment =>
-      $composableBuilder(column: $table.comment, builder: (column) => column);
-
-  GeneratedColumn<String> get message =>
-      $composableBuilder(column: $table.message, builder: (column) => column);
-
   GeneratedColumn<DateTime> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
 
@@ -3346,10 +2920,20 @@ class $$ReviewsTableAnnotationComposer
     builder: (column) => column,
   );
 
-  GeneratedColumn<DateTime> get lastUpdated => $composableBuilder(
-    column: $table.lastUpdated,
-    builder: (column) => column,
-  );
+  GeneratedColumn<String> get firstName =>
+      $composableBuilder(column: $table.firstName, builder: (column) => column);
+
+  GeneratedColumn<String> get lastName =>
+      $composableBuilder(column: $table.lastName, builder: (column) => column);
+
+  GeneratedColumn<String> get image =>
+      $composableBuilder(column: $table.image, builder: (column) => column);
+
+  GeneratedColumn<double> get rating =>
+      $composableBuilder(column: $table.rating, builder: (column) => column);
+
+  GeneratedColumn<String> get message =>
+      $composableBuilder(column: $table.message, builder: (column) => column);
 
   $$ProductsTableAnnotationComposer get productId {
     final $$ProductsTableAnnotationComposer composer = $composerBuilder(
@@ -3406,60 +2990,48 @@ class $$ReviewsTableTableManager
                 Value<int> id = const Value.absent(),
                 Value<int> reviewId = const Value.absent(),
                 Value<int> productId = const Value.absent(),
-                Value<int> userId = const Value.absent(),
-                Value<String> firstName = const Value.absent(),
-                Value<String> lastName = const Value.absent(),
-                Value<String> userImage = const Value.absent(),
-                Value<double> rating = const Value.absent(),
-                Value<String> comment = const Value.absent(),
-                Value<String> message = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> modifiedAt = const Value.absent(),
-                Value<DateTime> lastUpdated = const Value.absent(),
+                Value<String> firstName = const Value.absent(),
+                Value<String> lastName = const Value.absent(),
+                Value<String> image = const Value.absent(),
+                Value<double> rating = const Value.absent(),
+                Value<String> message = const Value.absent(),
               }) => ReviewsCompanion(
                 id: id,
                 reviewId: reviewId,
                 productId: productId,
-                userId: userId,
-                firstName: firstName,
-                lastName: lastName,
-                userImage: userImage,
-                rating: rating,
-                comment: comment,
-                message: message,
                 createdAt: createdAt,
                 modifiedAt: modifiedAt,
-                lastUpdated: lastUpdated,
+                firstName: firstName,
+                lastName: lastName,
+                image: image,
+                rating: rating,
+                message: message,
               ),
           createCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
                 required int reviewId,
                 required int productId,
-                required int userId,
-                required String firstName,
-                required String lastName,
-                required String userImage,
-                required double rating,
-                required String comment,
-                required String message,
                 required DateTime createdAt,
                 required DateTime modifiedAt,
-                required DateTime lastUpdated,
+                required String firstName,
+                required String lastName,
+                required String image,
+                required double rating,
+                required String message,
               }) => ReviewsCompanion.insert(
                 id: id,
                 reviewId: reviewId,
                 productId: productId,
-                userId: userId,
-                firstName: firstName,
-                lastName: lastName,
-                userImage: userImage,
-                rating: rating,
-                comment: comment,
-                message: message,
                 createdAt: createdAt,
                 modifiedAt: modifiedAt,
-                lastUpdated: lastUpdated,
+                firstName: firstName,
+                lastName: lastName,
+                image: image,
+                rating: rating,
+                message: message,
               ),
           withReferenceMapper:
               (p0) =>
@@ -3534,15 +3106,13 @@ typedef $$ProductImagesTableCreateCompanionBuilder =
     ProductImagesCompanion Function({
       Value<int> id,
       required int productId,
-      required String imageUrl,
-      required DateTime lastUpdated,
+      required String image,
     });
 typedef $$ProductImagesTableUpdateCompanionBuilder =
     ProductImagesCompanion Function({
       Value<int> id,
       Value<int> productId,
-      Value<String> imageUrl,
-      Value<DateTime> lastUpdated,
+      Value<String> image,
     });
 
 final class $$ProductImagesTableReferences
@@ -3588,13 +3158,8 @@ class $$ProductImagesTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get imageUrl => $composableBuilder(
-    column: $table.imageUrl,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<DateTime> get lastUpdated => $composableBuilder(
-    column: $table.lastUpdated,
+  ColumnFilters<String> get image => $composableBuilder(
+    column: $table.image,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -3636,13 +3201,8 @@ class $$ProductImagesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get imageUrl => $composableBuilder(
-    column: $table.imageUrl,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<DateTime> get lastUpdated => $composableBuilder(
-    column: $table.lastUpdated,
+  ColumnOrderings<String> get image => $composableBuilder(
+    column: $table.image,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -3682,13 +3242,8 @@ class $$ProductImagesTableAnnotationComposer
   GeneratedColumn<int> get id =>
       $composableBuilder(column: $table.id, builder: (column) => column);
 
-  GeneratedColumn<String> get imageUrl =>
-      $composableBuilder(column: $table.imageUrl, builder: (column) => column);
-
-  GeneratedColumn<DateTime> get lastUpdated => $composableBuilder(
-    column: $table.lastUpdated,
-    builder: (column) => column,
-  );
+  GeneratedColumn<String> get image =>
+      $composableBuilder(column: $table.image, builder: (column) => column);
 
   $$ProductsTableAnnotationComposer get productId {
     final $$ProductsTableAnnotationComposer composer = $composerBuilder(
@@ -3748,25 +3303,21 @@ class $$ProductImagesTableTableManager
               ({
                 Value<int> id = const Value.absent(),
                 Value<int> productId = const Value.absent(),
-                Value<String> imageUrl = const Value.absent(),
-                Value<DateTime> lastUpdated = const Value.absent(),
+                Value<String> image = const Value.absent(),
               }) => ProductImagesCompanion(
                 id: id,
                 productId: productId,
-                imageUrl: imageUrl,
-                lastUpdated: lastUpdated,
+                image: image,
               ),
           createCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
                 required int productId,
-                required String imageUrl,
-                required DateTime lastUpdated,
+                required String image,
               }) => ProductImagesCompanion.insert(
                 id: id,
                 productId: productId,
-                imageUrl: imageUrl,
-                lastUpdated: lastUpdated,
+                image: image,
               ),
           withReferenceMapper:
               (p0) =>
